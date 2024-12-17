@@ -1,0 +1,30 @@
+{
+  "name": "@gestell/sdk",
+  "version": "1.0.3",
+  "description": "The Official Gestell Node.js SDK",
+  "private": false,
+  "main": "./dist/src/index.js",
+  "types": "./dist/src/index.d.ts",
+  "author": "Chris Cates",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "test": "bun test --timeout 120000 --bail --coverage --coverage-reporter lcov && cat ./coverage/lcov.info | coveralls",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "dotenv": "16.4.7",
+    "node-fetch": "3.3.2"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "3.2.0",
+    "@eslint/js": "9.17.0",
+    "@types/bun": "1.1.14",
+    "coveralls": "3.1.1",
+    "eslint-config-prettier": "9.1.0",
+    "eslint-plugin-prettier": "5.2.1",
+    "eslint-plugin-simple-import-sort": "12.1.1",
+    "typescript": "5.7.2",
+    "typescript-eslint": "8.18.0"
+  }
+}

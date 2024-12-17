@@ -1,0 +1,34 @@
+version: 2.1
+orbs:
+  node: circleci/node@5
+jobs:
+  build-node:
+    # Build node project with Bun
+    executor: node/default
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies with Bun
+          command: curl -fsSL https://bun.sh/install | bash
+      - run:
+          name: Add Bun to PATH (if needed)
+          command: echo 'export PATH="$HOME/.bun/bin:$PATH"' >> $BASH_ENV
+      - run:
+          name: Install dependencies
+          command: bun install
+      - run:
+          name: Run build with Bun
+          command: bun run build
+      - run:
+          name: Create the ~/artifacts directory if it doesn't exist
+          command: mkdir -p ~/artifacts
+      - run:
+          name: Copy artifacts
+          command: cp -R build dist public .output .next .docusaurus ~/artifacts 2>/dev/null || true
+      - store_artifacts:
+          path: ~/artifacts
+          destination: node-build
+workflows:
+  build-test:
+    jobs:
+      - build-node
