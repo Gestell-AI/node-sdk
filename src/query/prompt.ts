@@ -1,6 +1,6 @@
-import type { BaseRequest } from 'types/base'
-import { PromptPayload, QueryKV } from 'types/query'
-import loadFetch from 'util/fetch'
+import type { BaseRequest } from '@gestell/types/base'
+import { PromptPayload, QueryKV } from '@gestell/types/query'
+import loadFetch from '@gestell/util/fetch'
 
 export async function promptQuery({
   apiKey,
