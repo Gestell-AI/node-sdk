@@ -2,12 +2,9 @@ import type { BaseRequest, BaseResponse } from 'types/base'
 import loadFetch from 'util/fetch'
 
 export interface PresignDocumentRequest {
+  collectionId: string
   filename: string
   type: string
-}
-
-export interface PresignDocumentRequestToApi extends PresignDocumentRequest {
-  id: string
 }
 
 export interface PresignDocumentResponse extends BaseResponse {
@@ -19,13 +16,15 @@ export async function presignDocument({
   apiKey,
   apiUrl,
   debug,
-  id,
+  collectionId,
   filename,
   type
-}: PresignDocumentRequestToApi &
-  BaseRequest): Promise<PresignDocumentResponse> {
+}: PresignDocumentRequest & BaseRequest): Promise<PresignDocumentResponse> {
   const fetch = await loadFetch()
-  const url = new URL(`/api/collection/${id}/document/presign`, apiUrl)
+  const url = new URL(
+    `/api/collection/${collectionId}/document/presign`,
+    apiUrl
+  )
 
   const payload = await fetch(url, {
     method: 'POST',

@@ -4,6 +4,7 @@ import { JobStatusType } from 'types/job'
 import loadFetch from 'util/fetch'
 
 export interface GetDocumentsRequest {
+  collectionId: string
   search?: string
   take?: number
   skip?: number
@@ -15,10 +16,6 @@ export interface GetDocumentsRequest {
   category?: JobStatusType
 }
 
-export interface GetDocumentsRequestToApi extends GetDocumentsRequest {
-  id: string
-}
-
 export interface GetDocumentsResponse extends BaseResponse {
   result: Document[]
 }
@@ -27,7 +24,7 @@ export async function getDocuments({
   apiKey,
   apiUrl,
   debug,
-  id,
+  collectionId,
   search = '',
   take = 10,
   skip = 0,
@@ -37,9 +34,9 @@ export async function getDocuments({
   edges = 'all',
   vectors = 'all',
   category = 'all'
-}: GetDocumentsRequestToApi & BaseRequest): Promise<GetDocumentsResponse> {
+}: GetDocumentsRequest & BaseRequest): Promise<GetDocumentsResponse> {
   const fetch = await loadFetch()
-  const url = new URL(`/api/collection/${id}/document`, apiUrl)
+  const url = new URL(`/api/collection/${collectionId}/document`, apiUrl)
 
   url.searchParams.set('search', search)
   url.searchParams.set('take', take.toString())

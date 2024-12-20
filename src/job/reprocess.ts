@@ -1,35 +1,36 @@
 import type { BaseRequest, BaseResponse } from 'types/base'
+import { JobType } from 'types/job'
 import loadFetch from 'util/fetch'
 
-export interface CancelJobsRequest {
-  ids: string[]
-}
-
-export interface CancelJobsRequestToApi extends CancelJobsRequest {
+export interface ReprocessDocumentsRequest {
   collectionId: string
+  ids: string[]
+  type: JobType
 }
 
-export type CancelJobsResponse = BaseResponse
+export type ReprocessDocumentsResponse = BaseResponse
 
-export async function cancelJobs({
+export async function reprocessDocument({
   apiKey,
   apiUrl,
   debug,
   collectionId,
-  ids
-}: CancelJobsRequestToApi & BaseRequest): Promise<CancelJobsResponse> {
+  ids,
+  type
+}: ReprocessDocumentsRequest &
+  BaseRequest): Promise<ReprocessDocumentsResponse> {
   const fetch = await loadFetch()
   const url = new URL(`/api/collection/${collectionId}/job`, apiUrl)
 
-  ids.forEach((id) => {
-    url.searchParams.append('id', id)
-  })
-
   const payload = await fetch(url, {
-    method: 'DELETE',
+    method: 'PUT',
     headers: {
       Authorization: `BEARER ${apiKey}`
-    }
+    },
+    body: JSON.stringify({
+      ids,
+      type
+    })
   })
 
   if (!payload.ok) {
@@ -39,11 +40,11 @@ export async function cancelJobs({
     }
     return {
       status: 'ERROR',
-      message: errorResponse?.message || 'There was an error cancelling jobs'
+      message: errorResponse?.message || 'There was an error reprocessing jobs'
     }
   }
 
-  const response = (await payload.json()) as CancelJobsResponse
+  const response = (await payload.json()) as ReprocessDocumentsResponse
 
   return response
 }

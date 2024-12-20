@@ -5,12 +5,15 @@ export interface DeleteOrganizationRequest {
   id: string
 }
 
+export type DeleteOrganizationResponse = BaseResponse
+
 export async function deleteOrganization({
   apiKey,
   apiUrl,
   debug,
   id
-}: DeleteOrganizationRequest & BaseRequest): Promise<BaseResponse> {
+}: DeleteOrganizationRequest &
+  BaseRequest): Promise<DeleteOrganizationResponse> {
   const fetch = await loadFetch()
   const url = new URL(`/api/organization/${id}`, apiUrl)
 

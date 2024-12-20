@@ -1,13 +1,13 @@
 # Gestell Node SDK
 
 ![license](https://img.shields.io/badge/license-MIT-blue)
-![version](https://img.shields.io/badge/version-1.0.3-blue)
+![version](https://img.shields.io/badge/version-1.1.0-blue)
 [![Coverage Status](https://coveralls.io/repos/github/Gestell-AI/node-sdk/badge.svg?branch=master)](https://coveralls.io/github/Gestell-AI/node-sdk?branch=master)
 [![CircleCI](https://dl.circleci.com/status-badge/img/circleci/7sUmZuDYQ6cd8WbCiCCnfR/VPonbpR7NEQSaXxQngcCGW/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/circleci/7sUmZuDYQ6cd8WbCiCCnfR/VPonbpR7NEQSaXxQngcCGW/tree/master)
 
 A fully featured SDK with extensive code completion for interacting with the Gestell Platform. Compatible with both web and server side environments.
 
-![Project Preview](./preview.gif)
+![Project Preview](https://github.com/Gestell-AI/node-sdk/blob/master/preview.gif?raw=true)
 
 ## Quick Start
 
@@ -49,8 +49,8 @@ import Gestell from '@gestell/sdk'
 export const gestell = new Gestell()
 
 export async function start() {
-  const collections = await gestell.collection.list()
-  console.log(collections)
+  const response = await gestell.collection.list()
+  console.log(response)
 }
 
 start()
@@ -106,3 +106,7 @@ bun link @gestell/sdk
 # ... Write test workflows
 bun run index.ts
 ```
+
+## CHANGELOG
+
+Review the [CHANGELOG](./CHANGELOG.md) to see updates and/or improvements to the SDK.

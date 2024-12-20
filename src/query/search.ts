@@ -2,10 +2,6 @@ import type { BaseRequest, BaseResponse } from 'types/base'
 import { QueryKV, QueryPayload, SearchResult } from 'types/query'
 import loadFetch from 'util/fetch'
 
-export interface SearchQueryRequestToApi extends QueryPayload {
-  id: string
-}
-
 export interface SearchQueryResponse extends BaseResponse {
   result: SearchResult[]
 }
@@ -14,7 +10,7 @@ export async function searchQuery({
   apiKey,
   apiUrl,
   debug,
-  id,
+  collectionId,
   categoryId = '',
   prompt,
   method = 'normal',
@@ -25,9 +21,9 @@ export async function searchQuery({
   maxResults = QueryKV[method].maxResults,
   includeContent = true,
   includeEdges = false
-}: SearchQueryRequestToApi & BaseRequest): Promise<SearchQueryResponse> {
+}: QueryPayload & BaseRequest): Promise<SearchQueryResponse> {
   const fetch = await loadFetch()
-  const url = new URL(`/api/collection/${id}/search`, apiUrl)
+  const url = new URL(`/api/collection/${collectionId}/search`, apiUrl)
 
   const payload = await fetch(url, {
     method: 'POST',

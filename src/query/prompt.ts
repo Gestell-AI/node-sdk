@@ -2,15 +2,11 @@ import type { BaseRequest } from 'types/base'
 import { PromptPayload, QueryKV } from 'types/query'
 import loadFetch from 'util/fetch'
 
-export interface PromptQueryRequestToApi extends PromptPayload {
-  id: string
-}
-
 export async function promptQuery({
   apiKey,
   apiUrl,
   debug,
-  id,
+  collectionId,
   categoryId = '',
   prompt,
   method = 'normal',
@@ -23,9 +19,9 @@ export async function promptQuery({
   cot = true,
   threadId = '',
   chat = false
-}: PromptQueryRequestToApi & BaseRequest): Promise<ReadableStream<string>> {
+}: PromptPayload & BaseRequest): Promise<ReadableStream<string>> {
   const fetch = await loadFetch()
-  const url = new URL(`/api/collection/${id}/prompt`, apiUrl)
+  const url = new URL(`/api/collection/${collectionId}/prompt`, apiUrl)
 
   const payload = await fetch(url, {
     method: 'POST',

@@ -1,31 +1,29 @@
 import type { BaseRequest, BaseResponse } from 'types/base'
+import { FeatureLayout } from 'types/layout'
 import loadFetch from 'util/fetch'
 
-export interface TablesQueryRequest {
+export interface FeaturesQueryRequest {
+  collectionId: string
   categoryId: string
   skip?: number
   take?: number
 }
 
-export interface TablesQueryRequestToApi extends TablesQueryRequest {
-  id: string
+export interface FeaturesQueryResponse extends BaseResponse {
+  result: FeatureLayout[]
 }
 
-export interface TablesQueryResponse extends BaseResponse {
-  result: object[]
-}
-
-export async function tablesQuery({
+export async function featuresQuery({
   apiKey,
   apiUrl,
   debug,
-  id,
+  collectionId,
   categoryId,
   skip = 0,
   take = 10
-}: TablesQueryRequestToApi & BaseRequest): Promise<TablesQueryResponse> {
+}: FeaturesQueryRequest & BaseRequest): Promise<FeaturesQueryResponse> {
   const fetch = await loadFetch()
-  const url = new URL(`/api/collection/${id}/table`, apiUrl)
+  const url = new URL(`/api/collection/${collectionId}/features`, apiUrl)
 
   const payload = await fetch(url, {
     method: 'POST',
@@ -33,7 +31,7 @@ export async function tablesQuery({
       Authorization: `BEARER ${apiKey}`
     },
     body: JSON.stringify({
-      collectionId: id,
+      collectionId,
       categoryId,
       skip,
       take
@@ -48,12 +46,13 @@ export async function tablesQuery({
     return {
       status: 'ERROR',
       message:
-        errorResponse?.message || 'There was an error running the table query',
+        errorResponse?.message ||
+        'There was an error running the features query',
       result: []
     }
   }
 
-  const response = (await payload.json()) as TablesQueryResponse
+  const response = (await payload.json()) as FeaturesQueryResponse
 
   return response
 }

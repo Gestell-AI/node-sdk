@@ -2,15 +2,12 @@ import type { BaseRequest, BaseResponse } from 'types/base'
 import loadFetch from 'util/fetch'
 
 export interface CreateDocumentRequest {
+  collectionId: string
   name: string
   path: string
   type: string
   instructions?: string
   job?: boolean
-}
-
-export interface CreateDocumentRequestToApi extends CreateDocumentRequest {
-  id: string
 }
 
 export interface CreateDocumentResponse extends BaseResponse {
@@ -21,15 +18,15 @@ export async function createDocument({
   apiKey,
   apiUrl,
   debug,
-  id,
+  collectionId,
   name,
   path,
   type,
-  instructions,
-  job
-}: CreateDocumentRequestToApi & BaseRequest): Promise<CreateDocumentResponse> {
+  instructions = '',
+  job = true
+}: CreateDocumentRequest & BaseRequest): Promise<CreateDocumentResponse> {
   const fetch = await loadFetch()
-  const url = new URL(`/api/collection/${id}/document`, apiUrl)
+  const url = new URL(`/api/collection/${collectionId}/document`, apiUrl)
 
   const payload = await fetch(url, {
     method: 'PUT',

@@ -3,7 +3,7 @@ import { CollectionType } from 'types/collection'
 import loadFetch from 'util/fetch'
 
 export interface UpdateCollectionRequest {
-  id: string
+  collectionId: string
   organizationId?: string
   name?: string
   type?: CollectionType
@@ -23,7 +23,7 @@ export async function updateCollection({
   apiKey,
   apiUrl,
   debug,
-  id,
+  collectionId,
   organizationId,
   name,
   type,
@@ -35,7 +35,7 @@ export async function updateCollection({
   tags
 }: UpdateCollectionRequest & BaseRequest): Promise<UpdateCollectionResponse> {
   const fetch = await loadFetch()
-  const url = new URL(`/api/collection/${id}`, apiUrl)
+  const url = new URL(`/api/collection/${collectionId}`, apiUrl)
 
   const payload = await fetch(url, {
     method: 'PATCH',

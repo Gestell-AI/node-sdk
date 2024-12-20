@@ -1,20 +1,25 @@
 import type { BaseRequest, BaseResponse } from 'types/base'
 import loadFetch from 'util/fetch'
 
-export interface DeleteCollectionRequest {
-  id: string
+export interface DeleteDocumentRequest {
+  collectionId: string
+  documentId: string
 }
 
-export type DeleteCollectionResponse = BaseResponse
+export type DeleteDocumentResponse = BaseResponse
 
-export async function deleteCollection({
+export async function deleteDocument({
   apiKey,
   apiUrl,
   debug,
-  id
-}: DeleteCollectionRequest & BaseRequest): Promise<DeleteCollectionResponse> {
+  collectionId,
+  documentId
+}: DeleteDocumentRequest & BaseRequest): Promise<DeleteDocumentResponse> {
   const fetch = await loadFetch()
-  const url = new URL(`/api/collection/${id}`, apiUrl)
+  const url = new URL(
+    `/api/collection/${collectionId}/document/${documentId}`,
+    apiUrl
+  )
 
   const payload = await fetch(url, {
     method: 'DELETE',
@@ -31,7 +36,7 @@ export async function deleteCollection({
     return {
       status: 'ERROR',
       message:
-        errorResponse?.message || 'There was an error deleting collection'
+        errorResponse?.message || 'There was an error deleting the document'
     }
   }
 

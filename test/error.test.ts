@@ -19,7 +19,7 @@ describe('Error', () => {
 
   test('organization.update', async () => {
     const response = await gestell.organization.update({
-      id: '...',
+      organizationId: '...',
       name: '...',
       description: '...'
     })
@@ -36,7 +36,7 @@ describe('Error', () => {
 
   test('organization.addMembers', async () => {
     const response = await gestell.organization.addMembers({
-      id: '...',
+      organizationId: '...',
       members: []
     })
     expect(response.status).toBe('ERROR')
@@ -44,7 +44,7 @@ describe('Error', () => {
 
   test('organization.removeMembers', async () => {
     const response = await gestell.organization.removeMembers({
-      id: '...',
+      organizationId: '...',
       members: []
     })
     expect(response.status).toBe('ERROR')
@@ -77,8 +77,37 @@ describe('Error', () => {
 
   test('collection.update', async () => {
     const response = await gestell.collection.update({
-      id: '...',
+      collectionId: '...',
       name: '...'
+    })
+    expect(response.status).toBe('ERROR')
+  })
+
+  test('collection.addCategory', async () => {
+    const response = await gestell.collection.addCategory({
+      collectionId: '...',
+      name: '...',
+      type: 'concepts',
+      instructions: '...'
+    })
+    expect(response.status).toBe('ERROR')
+  })
+
+  test('collection.updateCategory', async () => {
+    const response = await gestell.collection.updateCategory({
+      collectionId: '...',
+      categoryId: '...',
+      name: '...',
+      type: 'concepts',
+      instructions: '...'
+    })
+    expect(response.status).toBe('ERROR')
+  })
+
+  test('collection.removeCategory', async () => {
+    const response = await gestell.collection.removeCategory({
+      collectionId: '...',
+      categoryId: '...'
     })
     expect(response.status).toBe('ERROR')
   })
@@ -89,14 +118,16 @@ describe('Error', () => {
   })
 
   test('collection.query.search', async () => {
-    const response = await gestell.collection.query.search('...', {
+    const response = await gestell.query.search({
+      collectionId: '...',
       prompt: '...'
     })
     expect(response.status).toBe('ERROR')
   })
 
   test('collection.query.prompt', async () => {
-    const response = await gestell.collection.query.prompt('...', {
+    const response = await gestell.query.prompt({
+      collectionId: '...',
       prompt: '...'
     })
     const stream = response.getReader()
@@ -112,31 +143,37 @@ describe('Error', () => {
   })
 
   test('collection.query.table', async () => {
-    const response = await gestell.collection.query.table('...', {
+    const response = await gestell.query.table({
+      collectionId: '...',
       categoryId: '...'
     })
     expect(response.status).toBe('ERROR')
   })
 
   test('collection.query.features', async () => {
-    const response = await gestell.collection.query.features('...', {
+    const response = await gestell.query.features({
+      collectionId: '...',
       categoryId: '...'
     })
     expect(response.status).toBe('ERROR')
   })
 
   test('collection.job.get', async () => {
-    const response = await gestell.collection.job.get('...', '...')
+    const response = await gestell.job.get({
+      collectionId: '...',
+      jobId: '...'
+    })
     expect(response.status).toBe('ERROR')
   })
 
   test('collection.job.list', async () => {
-    const response = await gestell.collection.job.list('...')
+    const response = await gestell.job.list({ collectionId: '...' })
     expect(response.status).toBe('ERROR')
   })
 
   test('collection.job.reprocess', async () => {
-    const response = await gestell.collection.job.reprocess('...', {
+    const response = await gestell.job.reprocess({
+      collectionId: '...',
       type: 'status',
       ids: []
     })
@@ -144,22 +181,31 @@ describe('Error', () => {
   })
 
   test('collection.job.cancel', async () => {
-    const response = await gestell.collection.job.cancel('...', [])
+    const response = await gestell.job.cancel({
+      collectionId: '...',
+      ids: []
+    })
     expect(response.status).toBe('ERROR')
   })
 
   test('collection.document.get', async () => {
-    const response = await gestell.collection.document.get('...', '...')
+    const response = await gestell.document.get({
+      collectionId: '...',
+      documentId: '...'
+    })
     expect(response.status).toBe('ERROR')
   })
 
   test('collection.document.list', async () => {
-    const response = await gestell.collection.document.list('...')
+    const response = await gestell.document.list({
+      collectionId: '...'
+    })
     expect(response.status).toBe('ERROR')
   })
 
   test('collection.document.presign', async () => {
-    const response = await gestell.collection.document.presign('...', {
+    const response = await gestell.document.presign({
+      collectionId: '...',
       type: '...',
       filename: '...'
     })
@@ -167,7 +213,8 @@ describe('Error', () => {
   })
 
   test('collection.document.create', async () => {
-    const response = await gestell.collection.document.create('...', {
+    const response = await gestell.document.create({
+      collectionId: '...',
       type: '...',
       name: '...',
       path: '...'
@@ -175,15 +222,30 @@ describe('Error', () => {
     expect(response.status).toBe('ERROR')
   })
 
+  test('collection.document.upload', async () => {
+    const response = await gestell.document.upload({
+      collectionId: '...',
+      type: '...',
+      name: '...',
+      file: '...'
+    })
+    expect(response.status).toBe('ERROR')
+  })
+
   test('collection.document.update', async () => {
-    const response = await gestell.collection.document.update('...', '...', {
+    const response = await gestell.document.update({
+      collectionId: '...',
+      documentId: '...',
       name: '...'
     })
     expect(response.status).toBe('ERROR')
   })
 
   test('collection.document.delete', async () => {
-    const response = await gestell.collection.document.delete('...', '...')
+    const response = await gestell.document.delete({
+      collectionId: '...',
+      documentId: '...'
+    })
     expect(response.status).toBe('ERROR')
   })
 })

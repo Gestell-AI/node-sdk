@@ -3,6 +3,7 @@ import { Job, JobStatusType } from 'types/job'
 import loadFetch from 'util/fetch'
 
 export interface GetJobsRequest {
+  collectionId: string
   take?: number
   skip?: number
   status?: JobStatusType
@@ -10,10 +11,6 @@ export interface GetJobsRequest {
   edges?: JobStatusType
   vectors?: JobStatusType
   category?: JobStatusType
-}
-
-export interface GetJobsRequestToApi extends GetJobsRequest {
-  id: string
 }
 
 export interface GetJobsResponse extends BaseResponse {
@@ -24,7 +21,7 @@ export async function getJobs({
   apiKey,
   apiUrl,
   debug,
-  id,
+  collectionId,
   take = 10,
   skip = 0,
   status = 'all',
@@ -32,9 +29,9 @@ export async function getJobs({
   edges = 'all',
   vectors = 'all',
   category = 'all'
-}: GetJobsRequestToApi & BaseRequest): Promise<GetJobsResponse> {
+}: GetJobsRequest & BaseRequest): Promise<GetJobsResponse> {
   const fetch = await loadFetch()
-  const url = new URL(`/api/collection/${id}/job`, apiUrl)
+  const url = new URL(`/api/collection/${collectionId}/job`, apiUrl)
 
   url.searchParams.set('take', take.toString())
   url.searchParams.set('skip', skip.toString())
