@@ -1,4 +1,4 @@
-import type { BaseRequest, BaseResponse } from 'types/base';
+import type { BaseRequest, BaseResponse } from '../types/base';
 export interface UploadDocumentRequest {
     collectionId: string;
     name: string;

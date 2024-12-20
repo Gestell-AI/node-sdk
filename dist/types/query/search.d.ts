@@ -1,5 +1,5 @@
-import type { BaseRequest, BaseResponse } from 'types/base';
-import { QueryPayload, SearchResult } from 'types/query';
+import type { BaseRequest, BaseResponse } from '../types/base';
+import { QueryPayload, SearchResult } from '../types/query';
 export interface SearchQueryResponse extends BaseResponse {
     result: SearchResult[];
 }

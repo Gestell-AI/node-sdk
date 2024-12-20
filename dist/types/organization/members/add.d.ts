@@ -1,5 +1,5 @@
-import type { BaseRequest, BaseResponse } from 'types/base';
-import { OrganizationMemberPayload } from 'types/organization';
+import type { BaseRequest, BaseResponse } from '../../types/base';
+import { OrganizationMemberPayload } from '../../types/organization';
 export interface AddMembersRequest {
     organizationId: string;
     members: OrganizationMemberPayload[];

@@ -1,5 +1,5 @@
-import type { BaseRequest, BaseResponse } from 'types/base';
-import { Job } from 'types/job';
+import type { BaseRequest, BaseResponse } from '../types/base';
+import { Job } from '../types/job';
 export interface GetJobRequest {
     collectionId: string;
     jobId: string;

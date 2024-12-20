@@ -1,6 +1,6 @@
-import type { BaseRequest, BaseResponse } from 'types/base'
-import { FeatureLayout } from 'types/layout'
-import loadFetch from 'util/fetch'
+import type { BaseRequest, BaseResponse } from '@gestell/types/base'
+import { FeatureLayout } from '@gestell/types/layout'
+import loadFetch from '@gestell/util/fetch'
 
 export interface FeaturesQueryRequest {
   collectionId: string

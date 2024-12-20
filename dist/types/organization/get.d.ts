@@ -1,5 +1,5 @@
-import type { BaseRequest, BaseResponse } from 'types/base';
-import { Organization } from 'types/organization';
+import type { BaseRequest, BaseResponse } from '../types/base';
+import { Organization } from '../types/organization';
 export interface GetOrganizationRequest {
     id: string;
 }

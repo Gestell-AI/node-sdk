@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
+    "baseUrl": "./",
     "lib": ["ESNext", "DOM"],
     "types": ["bun"],
     "outDir": "dist",
-    "baseUrl": "./src",
     "target": "ESNext",
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
@@ -16,7 +16,7 @@
     "noImplicitAny": true,
     "removeComments": false,
     "paths": {
-      "node-fetch": ["node_modules/node-fetch"]
+      "@gestell/*": ["src/*"]
     }
   },
   "include": [

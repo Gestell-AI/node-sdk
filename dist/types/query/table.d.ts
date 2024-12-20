@@ -1,4 +1,4 @@
-import type { BaseRequest, BaseResponse } from 'types/base';
+import type { BaseRequest, BaseResponse } from '../types/base';
 export interface TablesQueryRequest {
     collectionId: string;
     categoryId: string;

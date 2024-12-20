@@ -1,6 +1,6 @@
-import { Category } from 'types/category';
-import { Document } from 'types/document';
-import { Organization } from 'types/organization';
+import { Category } from '../types/category';
+import { Document } from '../types/document';
+import { Organization } from '../types/organization';
 export type CollectionType = 'frame' | 'searchable-frame' | 'canon' | 'features';
 export interface Collection {
     id: string;

@@ -1,4 +1,7 @@
-export default async function loadFetch() {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = loadFetch;
+async function loadFetch() {
     if (typeof window !== 'undefined' && typeof window.fetch === 'function') {
         // Running in a browser environment
         return fetch;

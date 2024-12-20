@@ -1,5 +1,5 @@
-import type { BaseRequest, BaseResponse } from 'types/base';
-import { Document } from 'types/document';
+import type { BaseRequest, BaseResponse } from '../types/base';
+import { Document } from '../types/document';
 export interface GetDocumentRequest {
     collectionId: string;
     documentId: string;

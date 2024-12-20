@@ -1,5 +1,5 @@
-import { Job } from 'types/job';
-import { AudioLayout, DocumentLayout, PhotoLayout, VideoLayout } from 'types/layout';
+import { Job } from '../types/job';
+import { AudioLayout, DocumentLayout, PhotoLayout, VideoLayout } from '../types/layout';
 export interface Document {
     id: string;
     collectionId: string;

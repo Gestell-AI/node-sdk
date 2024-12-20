@@ -1,5 +1,5 @@
-import type { BaseRequest, BaseResponse } from 'types/base';
-import { Collection } from 'types/collection';
+import type { BaseRequest, BaseResponse } from '../types/base';
+import { Collection } from '../types/collection';
 export interface GetCollectionsRequest {
     search?: string;
     take?: number;

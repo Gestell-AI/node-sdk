@@ -1,9 +1,8 @@
-import { createDocument } from 'document/create'
-import { presignDocument } from 'document/presign'
 import { createReadStream } from 'fs'
 import mime from 'mime-types'
-import type { BodyInit } from 'node-fetch'
-import type { BaseRequest, BaseResponse } from 'types/base'
+import { createDocument } from '@gestell/document/create'
+import { presignDocument } from '@gestell/document/presign'
+import type { BaseRequest, BaseResponse } from '@gestell/types/base'
 
 export interface UploadDocumentRequest {
   collectionId: string
@@ -75,7 +74,7 @@ export async function uploadDocument({
 
     await fetch(url, {
       method: 'PUT',
-      body: formData as unknown as BodyInit
+      body: formData as unknown as undefined
     })
   } else {
     return {

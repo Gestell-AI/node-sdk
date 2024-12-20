@@ -1,5 +1,5 @@
-import type { BaseRequest, BaseResponse } from 'types/base';
-import { CollectionType } from 'types/collection';
+import type { BaseRequest, BaseResponse } from '../types/base';
+import { CollectionType } from '../types/collection';
 export interface UpdateCollectionRequest {
     collectionId: string;
     organizationId?: string;

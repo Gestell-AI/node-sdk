@@ -1,10 +1,10 @@
-import { Job } from 'types/job'
+import { Job } from '@gestell/types/job'
 import {
   AudioLayout,
   DocumentLayout,
   PhotoLayout,
   VideoLayout
-} from 'types/layout'
+} from '@gestell/types/layout'
 
 export interface Document {
   id: string

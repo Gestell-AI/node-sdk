@@ -1,7 +1,7 @@
 # Gestell Node SDK
 
 ![license](https://img.shields.io/badge/license-MIT-blue)
-![version](https://img.shields.io/badge/version-1.1.0-blue)
+![version](https://img.shields.io/badge/version-1.1.20-blue)
 [![Coverage Status](https://coveralls.io/repos/github/Gestell-AI/node-sdk/badge.svg?branch=master)](https://coveralls.io/github/Gestell-AI/node-sdk?branch=master)
 [![CircleCI](https://dl.circleci.com/status-badge/img/circleci/7sUmZuDYQ6cd8WbCiCCnfR/VPonbpR7NEQSaXxQngcCGW/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/circleci/7sUmZuDYQ6cd8WbCiCCnfR/VPonbpR7NEQSaXxQngcCGW/tree/master)
 
@@ -32,7 +32,7 @@ export GESTELL_API_KEY = "..."
 
 ```typescript
 // Or, load it into the SDK library directly
-import Gestell from '@gestell/sdk'
+import { Gestell } from '@gestell/sdk'
 
 export const GESTELL_API_KEY = process.env.GESTELL_API_KEY || '...'
 export const gestell = new Gestell({ key: GESTELL_API_KEY })
@@ -44,7 +44,7 @@ Finally, start using the Gestell Platform SDK. The SDK can be used both on the c
 
 ```typescript
 // start.ts
-import Gestell from '@gestell/sdk'
+import { Gestell } from '@gestell/sdk'
 
 export const gestell = new Gestell()
 

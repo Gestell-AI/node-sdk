@@ -1,6 +1,6 @@
-import type { BaseRequest, BaseResponse } from 'types/base';
-import { Document } from 'types/document';
-import { JobStatusType } from 'types/job';
+import type { BaseRequest, BaseResponse } from '../types/base';
+import { Document } from '../types/document';
+import { JobStatusType } from '../types/job';
 export interface GetDocumentsRequest {
     collectionId: string;
     search?: string;

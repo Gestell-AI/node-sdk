@@ -1,6 +1,6 @@
-import type { BaseRequest, BaseResponse } from 'types/base'
-import { CollectionType } from 'types/collection'
-import loadFetch from 'util/fetch'
+import type { BaseRequest, BaseResponse } from '@gestell/types/base'
+import { CollectionType } from '@gestell/types/collection'
+import loadFetch from '@gestell/util/fetch'
 
 export interface UpdateCollectionRequest {
   collectionId: string
