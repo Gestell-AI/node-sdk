@@ -5,12 +5,14 @@ export interface DeleteCollectionRequest {
   id: string
 }
 
+export type DeleteCollectionResponse = BaseResponse
+
 export async function deleteCollection({
   apiKey,
   apiUrl,
   debug,
   id
-}: DeleteCollectionRequest & BaseRequest): Promise<BaseResponse> {
+}: DeleteCollectionRequest & BaseRequest): Promise<DeleteCollectionResponse> {
   const fetch = await loadFetch()
   const url = new URL(`/api/collection/${id}`, apiUrl)
 

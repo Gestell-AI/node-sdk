@@ -3,19 +3,21 @@ import { OrganizationMemberPayload } from 'types/organization'
 import loadFetch from 'util/fetch'
 
 export interface AddMembersRequest {
-  id: string
+  organizationId: string
   members: OrganizationMemberPayload[]
 }
+
+export type AddMembersResponse = BaseResponse
 
 export async function addMembers({
   apiKey,
   apiUrl,
   debug,
-  id,
+  organizationId,
   members
-}: AddMembersRequest & BaseRequest): Promise<BaseResponse> {
+}: AddMembersRequest & BaseRequest): Promise<AddMembersResponse> {
   const fetch = await loadFetch()
-  const url = new URL(`/api/organization/${id}/member`, apiUrl)
+  const url = new URL(`/api/organization/${organizationId}/member`, apiUrl)
 
   const payload = await fetch(url, {
     method: 'POST',

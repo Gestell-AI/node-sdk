@@ -1,87 +1,121 @@
 import {
+  addCategory,
+  AddCategoryRequest,
+  AddCategoryResponse
+} from 'collection/addCategory'
+import {
   createCollection,
   CreateCollectionRequest,
   CreateCollectionResponse
 } from 'collection/create'
-import { deleteCollection } from 'collection/delete'
-import {
-  createDocument,
-  CreateDocumentRequest,
-  CreateDocumentResponse
-} from 'collection/document/create'
-import { deleteDocument } from 'collection/document/delete'
-import {
-  getDocuments,
-  GetDocumentsRequest,
-  GetDocumentsResponse
-} from 'collection/document/get'
-import { getDocument, GetDocumentResponse } from 'collection/document/getId'
-import {
-  presignDocument,
-  PresignDocumentRequest,
-  PresignDocumentResponse
-} from 'collection/document/presign'
-import {
-  updateDocument,
-  UpdateDocumentRequest
-} from 'collection/document/update'
+import { deleteCollection, DeleteCollectionResponse } from 'collection/delete'
+import { getCollection, GetCollectionResponse } from 'collection/get'
 import {
   getCollections,
   GetCollectionsRequest,
   GetCollectionsResponse
-} from 'collection/get'
-import { getCollection, GetCollectionResponse } from 'collection/getId'
-import { cancelJobs, CancelJobsResponse } from 'collection/job/cancel'
-import { getJobs, GetJobsRequest, GetJobsResponse } from 'collection/job/get'
-import { getJob, GetJobResponse } from 'collection/job/getId'
+} from 'collection/list'
 import {
-  reprocessDocument,
-  ReprocessDocumentsRequest,
-  ReprocessDocumentsResponse
-} from 'collection/job/reprocess'
-import {
-  featuresQuery,
-  FeaturesQueryRequest,
-  FeaturesQueryResponse
-} from 'collection/query/features'
-import { promptQuery } from 'collection/query/prompt'
-import { searchQuery, SearchQueryResponse } from 'collection/query/search'
-import {
-  tablesQuery,
-  TablesQueryRequest,
-  TablesQueryResponse
-} from 'collection/query/table'
+  removeCategory,
+  RemoveCategoryRequest,
+  RemoveCategoryResponse
+} from 'collection/removeCategory'
 import {
   updateCollection,
   UpdateCollectionRequest,
   UpdateCollectionResponse
 } from 'collection/update'
-import { config } from 'dotenv'
+import {
+  updateCategory,
+  UpdateCategoryRequest,
+  UpdateCategoryResponse
+} from 'collection/updateCategory'
+import {
+  createDocument,
+  CreateDocumentRequest,
+  CreateDocumentResponse
+} from 'document/create'
+import {
+  deleteDocument,
+  DeleteDocumentRequest,
+  DeleteDocumentResponse
+} from 'document/delete'
+import {
+  getDocument,
+  GetDocumentRequest,
+  GetDocumentResponse
+} from 'document/get'
+import {
+  getDocuments,
+  GetDocumentsRequest,
+  GetDocumentsResponse
+} from 'document/list'
+import {
+  presignDocument,
+  PresignDocumentRequest,
+  PresignDocumentResponse
+} from 'document/presign'
+import {
+  updateDocument,
+  UpdateDocumentRequest,
+  UpdateDocumentResponse
+} from 'document/update'
+import {
+  uploadDocument,
+  UploadDocumentRequest,
+  UploadDocumentResponse
+} from 'document/upload'
+import { cancelJobs, CancelJobsRequest, CancelJobsResponse } from 'job/cancel'
+import { getJob, GetJobRequest, GetJobResponse } from 'job/get'
+import { getJobs, GetJobsRequest, GetJobsResponse } from 'job/list'
+import {
+  reprocessDocument,
+  ReprocessDocumentsRequest,
+  ReprocessDocumentsResponse
+} from 'job/reprocess'
 import {
   createOrganization,
   CreateOrganizationRequest,
   CreateOrganizationResponse
 } from 'organization/create'
-import { deleteOrganization } from 'organization/delete'
+import {
+  deleteOrganization,
+  DeleteOrganizationResponse
+} from 'organization/delete'
+import { getOrganization, GetOrganizationResponse } from 'organization/get'
 import {
   getOrganizations,
   GetOrganizationsRequest,
   GetOrganizationsResponse
-} from 'organization/get'
-import { getOrganization, GetOrganizationResponse } from 'organization/getId'
-import { addMembers, AddMembersRequest } from 'organization/members/add'
+} from 'organization/list'
+import {
+  addMembers,
+  AddMembersRequest,
+  AddMembersResponse
+} from 'organization/members/add'
 import {
   removeMembers,
-  RemoveMembersRequest
+  RemoveMembersRequest,
+  RemoveMembersResponse
 } from 'organization/members/remove'
 import {
   updateOrganization,
-  UpdateOrganizationRequest
+  UpdateOrganizationRequest,
+  UpdateOrganizationResponse
 } from 'organization/update'
-import { BaseResponse } from 'types/base'
+import {
+  featuresQuery,
+  FeaturesQueryRequest,
+  FeaturesQueryResponse
+} from 'query/features'
+import { promptQuery } from 'query/prompt'
+import { searchQuery, SearchQueryResponse } from 'query/search'
+import {
+  tablesQuery,
+  TablesQueryRequest,
+  TablesQueryResponse
+} from 'query/table'
 import { PromptPayload, QueryPayload } from 'types/query'
-
-config()
 
 export interface GestellInit {
   key?: string
@@ -106,7 +140,7 @@ export class Gestell {
      * Fetches the details of a specific organization using its unique ID.
      * Learn more about usage at: https://gestell.ai/docs/reference#organization
      *
-     * @param id - The ID of the organization to retrieve.
+     * @param organizationId - The ID of the organization to retrieve.
      * @returns A promise that resolves to the organization details, including:
      * - `id`: The unique identifier of the organization.
      * - `name`: The name of the organization.
@@ -116,7 +150,7 @@ export class Gestell {
      * - `dateCreated`: The date the organization was created.
      * - `dateUpdated`: The date the organization was last updated.
      */
-    get: (id: string) => Promise<GetOrganizationResponse>
+    get: (organizationId: string) => Promise<GetOrganizationResponse>
 
     /**
      * Fetches a list of organizations that the user is associated with, with optional filters or pagination parameters.
@@ -162,33 +196,35 @@ export class Gestell {
      * Learn more about usage at: https://gestell.ai/docs/reference#organization
      *
      * @param payload - The details of the organization to update, including:
-     * - `id`: The unique identifier of the organization to update.
+     * - `organizationId`: The unique identifier of the organization to update.
      * - `name`: The updated name of the organization.
      * - `description`: The updated description of the organization.
      * @returns A promise that resolves to the response of the update request, including:
      * - `status`: The status of the update request.
      * - `message`: An optional message providing additional details about the request result.
      */
-    update: (payload: UpdateOrganizationRequest) => Promise<BaseResponse>
+    update: (
+      payload: UpdateOrganizationRequest
+    ) => Promise<UpdateOrganizationResponse>
 
     /**
      * Allows the deletion of an organization by its unique ID. Once deleted, the organization and associated data are removed from the system.
      * THIS IS NOT REVERSIBLE.
      * Learn more about usage at: https://gestell.ai/docs/reference#organization
      *
-     * @param id - The ID of the organization to delete.
+     * @param organizationId - The ID of the organization to delete.
      * @returns A promise that resolves to the response of the update request, including:
      * - `status`: The status of the delete request.
      * - `message`: An optional message providing additional details about the request result.
      */
-    delete: (id: string) => Promise<BaseResponse>
+    delete: (organizationId: string) => Promise<DeleteOrganizationResponse>
 
     /**
      * Adds new members to the organization based on the provided payload.
      * Learn more about usage at: https://gestell.ai/docs/reference#organization
      *
      * @param payload - The details of the members to add, including:
-     * - `id`: The id of the organization
+     * - `organizationId`: The id of the organization
      * - `members`: An array of the members which include the following:
      *    - `id`: The identifier of the member to add, which can be a UUID or an email.
      *    - `role`: The role of the member within the organization, either `member` or `admin`.
@@ -196,20 +232,22 @@ export class Gestell {
      * - `status`: The status of the add request.
      * - `message`: An optional message providing additional details about the request result.
      */
-    addMembers: (payload: AddMembersRequest) => Promise<BaseResponse>
+    addMembers: (payload: AddMembersRequest) => Promise<AddMembersResponse>
 
     /**
      * Removes existing members from the organization based on the provided payload.
      * Learn more about usage at: https://gestell.ai/docs/reference#organization
      *
      * @param payload - The details of the members to remove:
-     * - `id`: The id of the organization
+     * - `organizationId`: The id of the organization
      * - `members`: The identifier of the member to remove, which can be a UUID or an email.
      * @returns A promise that resolves to the response of the remove member request, including:
      * - `status`: The status of the remove request.
      * - `message`: An optional message providing additional details about the request result.
      */
-    removeMembers: (payload: RemoveMembersRequest) => Promise<BaseResponse>
+    removeMembers: (
+      payload: RemoveMembersRequest
+    ) => Promise<RemoveMembersResponse>
   }
 
   /**
@@ -314,7 +352,7 @@ export class Gestell {
      * Learn more about usage at: https://gestell.ai/docs/reference#collection
      *
      * @param payload - The details of the collection to update, including:
-     * - `id`: The unique identifier of the collection to update.
+     * - `collectionId`: The unique identifier of the collection to update.
      * - `organizationId`: An optional update for the organization ID associated with the collection.
      * - `name`: An optional new name for the collection.
      * - `type`: An optional new type for the collection (`frame`, `searchable-frame`, `canon`, or `features`).
@@ -341,328 +379,366 @@ export class Gestell {
      * - `status`: The status of the update request.
      * - `message`: An optional message providing additional details about the request result.
      */
-    delete: (collectionId: string) => Promise<BaseResponse>
+    delete: (collectionId: string) => Promise<DeleteCollectionResponse>
 
     /**
-     * Query a collection. This requires your collection ID to query.
-     * Note that querying tables and features requires both a collectionId and categoryId.
+     * Adds a new category to an existing collection.
+     * Learn more about usage at: https://gestell.ai/docs/reference#collection
+     *
+     * @param payload - The details of the category to add, including:
+     * - `collectionId`: The ID of the collection to which the category will be added.
+     * - `name`: The name of the new category.
+     * - `type`: The type of the category (e.g., custom or predefined).
+     * - `instructions`: Additional instructions or notes related to the category.
+     *
+     * @returns A promise that resolves to the response of the category addition, including:
+     * - `status`: The status of the request (`OK` or `ERROR`).
+     * - `message`: An optional message providing additional details about the request result.
+     * - `id`: The unique identifier of the newly added category.
+     */
+    addCategory: (payload: AddCategoryRequest) => Promise<AddCategoryResponse>
+
+    /**
+     * Updates an existing category within a collection.
+     * Learn more about usage at: https://gestell.ai/docs/reference#collection
+     *
+     * @param payload - The details of the category to update, including:
+     * - `collectionId`: The ID of the collection containing the category.
+     * - `categoryId`: The unique identifier of the category to update.
+     * - `name`: (Optional) The updated name of the category.
+     * - `type`: (Optional) The updated type of the category (e.g., custom or predefined).
+     * - `instructions`: (Optional) Additional updated instructions or notes related to the category.
+     *
+     * @returns A promise that resolves to the response of the category update, including:
+     * - `status`: The status of the request (`OK` or `ERROR`).
+     * - `message`: An optional message providing additional details about the request result.
+     */
+    updateCategory: (
+      payload: UpdateCategoryRequest
+    ) => Promise<UpdateCategoryResponse>
+
+    /**
+     * Removes an existing category from a collection.
+     * Learn more about usage at: https://gestell.ai/docs/reference#collection
+     *
+     * @param payload - The details of the category to remove, including:
+     * - `collectionId`: The ID of the collection containing the category.
+     * - `categoryId`: The unique identifier of the category to remove.
+     *
+     * @returns A promise that resolves to the response of the category removal, including:
+     * - `status`: The status of the request (`OK` or `ERROR`).
+     * - `message`: An optional message providing additional details about the request result.
+     */
+    removeCategory: (
+      payload: RemoveCategoryRequest
+    ) => Promise<RemoveCategoryResponse>
+  }
+
+  /**
+   * Query a collection. This requires your collection ID to query.
+   * Note that querying tables and features requires both a collectionId and categoryId.
+   * Learn more about usage at: https://gestell.ai/docs/reference#query
+   *
+   * @param collectionId - The ID of the collection
+   */
+  query: {
+    /**
+     * Performs a search operation on a specific collection using the provided payload.
      * Learn more about usage at: https://gestell.ai/docs/reference#query
      *
-     * @param collectionId - The ID of the collection
+     * @param collectionId - The ID of the collection to search.
+     * @param payload - The search parameters, including:
+     * - `categoryId`: An optional category ID to filter results by.
+     * - `prompt`: The search query or prompt.
+     * - `method`: An optional search method to use.
+     * - `type`: An optional search type to specify.
+     * - `vectorDepth`: An optional depth of vector search.
+     * - `nodeDepth`: An optional depth of node search.
+     * - `maxQueries`: An optional maximum number of queries to run.
+     * - `maxResults`: An optional maximum number of results to return.
+     * - `includeContent`: A flag to indicate whether to include content in the search results.
+     * - `includeEdges`: A flag to indicate whether to include edges in the search results.
+     * @returns A promise that resolves to the search results, including:
+     * - `status`: The status of the search request.
+     * - `message`: An optional message providing additional details about the request result.
+     * - `result`: An array of search results, where each result includes:
+     *   - `content`: The content found in the search.
+     *   - `citation`: The citation or reference for the content.
+     *   - `reason`: The reason or explanation for the result.
      */
-    query: {
-      /**
-       * Performs a search operation on a specific collection using the provided payload.
-       * Learn more about usage at: https://gestell.ai/docs/reference#collection
-       *
-       * @param collectionId - The ID of the collection to search.
-       * @param payload - The search parameters, including:
-       * - `categoryId`: An optional category ID to filter results by.
-       * - `prompt`: The search query or prompt.
-       * - `method`: An optional search method to use.
-       * - `type`: An optional search type to specify.
-       * - `vectorDepth`: An optional depth of vector search.
-       * - `nodeDepth`: An optional depth of node search.
-       * - `maxQueries`: An optional maximum number of queries to run.
-       * - `maxResults`: An optional maximum number of results to return.
-       * - `includeContent`: A flag to indicate whether to include content in the search results.
-       * - `includeEdges`: A flag to indicate whether to include edges in the search results.
-       * @returns A promise that resolves to the search results, including:
-       * - `status`: The status of the search request.
-       * - `message`: An optional message providing additional details about the request result.
-       * - `result`: An array of search results, where each result includes:
-       *   - `content`: The content found in the search.
-       *   - `citation`: The citation or reference for the content.
-       *   - `reason`: The reason or explanation for the result.
-       */
-      search: (
-        collectionId: string,
-        payload: QueryPayload
-      ) => Promise<SearchQueryResponse>
-
-      /**
-       * Performs a query operation using a prompt on a specific collection.
-       * Learn more about usage at: https://gestell.ai/docs/reference#collection
-       *
-       * @param collectionId - The ID of the collection to query.
-       * @param payload - The prompt parameters, including:
-       * - `categoryId`: An optional category ID to filter results by.
-       * - `prompt`: The prompt or query to execute.
-       * - `method`: An optional search method to use.
-       * - `type`: An optional search type to specify.
-       * - `vectorDepth`: An optional depth of vector search.
-       * - `nodeDepth`: An optional depth of node search.
-       * - `maxQueries`: An optional maximum number of queries to run.
-       * - `maxResults`: An optional maximum number of results to return.
-       * - `template`: An optional template to use for the prompt.
-       * - `cot`: A flag indicating whether to use chain-of-thought reasoning (optional).
-       * - `threadId`: An optional thread ID to associate with the query.
-       * - `chat`: A flag indicating whether the query is part of a chat (optional).
-       * @returns A promise that resolves to a readable stream of the prompt query response.
-       */
-      prompt: (
-        collectionId: string,
-        payload: PromptPayload
-      ) => Promise<ReadableStream<string>>
-
-      /**
-       * Retrieves feature-related information from a specific collection.
-       * Learn more about usage at: https://gestell.ai/docs/reference#collection
-       *
-       * @param collectionId - The ID of the collection to query.
-       * @param payload - The features query parameters, including:
-       * - `categoryId`: The ID of the category to retrieve features for.
-       * - `skip`: An optional parameter to skip a specified number of results (for pagination).
-       * - `take`: An optional parameter to limit the number of results returned (for pagination).
-       * @returns A promise that resolves to the features query response, including:
-       * - `status`: The status of the query request.
-       * - `message`: An optional message providing additional details about the request result.
-       * - `result`: An array of `FeatureLayout` objects, where each feature includes:
-       *   - `position`: An array representing the position of the feature.
-       *   - `label`: The label for the feature.
-       *   - `description`: A description of the feature.
-       */
-      features: (
-        collectionId: string,
-        payload: FeaturesQueryRequest
-      ) => Promise<FeaturesQueryResponse>
-
-      /**
-       * Retrieves table-related information from a specific collection.
-       * Learn more about usage at: https://gestell.ai/docs/reference#collection
-       *
-       * @param collectionId - The ID of the collection to query.
-       * @param payload - The features query parameters, including:
-       * - `categoryId`: The ID of the category to retrieve features for.
-       * - `skip`: An optional parameter to skip a specified number of results (for pagination).
-       * - `take`: An optional parameter to limit the number of results returned (for pagination).
-       * @returns A promise that resolves to a dynamic table array that depends on your category instructions.
-       */
-      table: (
-        collectionId: string,
-        payload: TablesQueryRequest
-      ) => Promise<TablesQueryResponse>
-    }
+    search: (payload: QueryPayload) => Promise<SearchQueryResponse>
 
     /**
-     * Manage documents within a collection. You will need to retrieve the collection id to manage documents.
+     * Performs a query operation using a prompt on a specific collection.
+     * Learn more about usage at: https://gestell.ai/docs/reference#query
+     *
+     * @param collectionId - The ID of the collection to query.
+     * @param payload - The prompt parameters, including:
+     * - `categoryId`: An optional category ID to filter results by.
+     * - `prompt`: The prompt or query to execute.
+     * - `method`: An optional search method to use.
+     * - `type`: An optional search type to specify.
+     * - `vectorDepth`: An optional depth of vector search.
+     * - `nodeDepth`: An optional depth of node search.
+     * - `maxQueries`: An optional maximum number of queries to run.
+     * - `maxResults`: An optional maximum number of results to return.
+     * - `template`: An optional template to use for the prompt.
+     * - `cot`: A flag indicating whether to use chain-of-thought reasoning (optional).
+     * - `threadId`: An optional thread ID to associate with the query.
+     * - `chat`: A flag indicating whether the query is part of a chat (optional).
+     * @returns A promise that resolves to a readable stream of the prompt query response.
+     */
+    prompt: (payload: PromptPayload) => Promise<ReadableStream<string>>
+
+    /**
+     * Retrieves feature-related information from a specific collection.
+     * Learn more about usage at: https://gestell.ai/docs/reference#query
+     *
+     * @param collectionId - The ID of the collection to query.
+     * @param payload - The features query parameters, including:
+     * - `categoryId`: The ID of the category to retrieve features for.
+     * - `skip`: An optional parameter to skip a specified number of results (for pagination).
+     * - `take`: An optional parameter to limit the number of results returned (for pagination).
+     * @returns A promise that resolves to the features query response, including:
+     * - `status`: The status of the query request.
+     * - `message`: An optional message providing additional details about the request result.
+     * - `result`: An array of `FeatureLayout` objects, where each feature includes:
+     *   - `position`: An array representing the position of the feature.
+     *   - `label`: The label for the feature.
+     *   - `description`: A description of the feature.
+     */
+    features: (payload: FeaturesQueryRequest) => Promise<FeaturesQueryResponse>
+
+    /**
+     * Retrieves table-related information from a specific collection.
+     * Learn more about usage at: https://gestell.ai/docs/reference#query
+     *
+     * @param collectionId - The ID of the collection to query.
+     * @param payload - The features query parameters, including:
+     * - `categoryId`: The ID of the category to retrieve features for.
+     * - `skip`: An optional parameter to skip a specified number of results (for pagination).
+     * - `take`: An optional parameter to limit the number of results returned (for pagination).
+     * @returns A promise that resolves to a dynamic table array that depends on your category instructions.
+     */
+    table: (payload: TablesQueryRequest) => Promise<TablesQueryResponse>
+  }
+
+  /**
+   * Manage documents within a collection. You will need to retrieve the collection id to manage documents.
+   * Learn more about usage at: https://gestell.ai/docs/reference#document
+   *
+   * @param collectionId - The ID of the collection
+   * @param documentId - The ID of the document, this is usually required unless creating a document
+   */
+  document: {
+    /**
+     * Fetches a specific document from a collection using its unique document ID.
      * Learn more about usage at: https://gestell.ai/docs/reference#document
      *
-     * @param collectionId - The ID of the collection
-     * @param documentId - The ID of the document, this is usually required unless creating a document
+     * @param collectionId - The ID of the collection containing the document.
+     * @param documentId - The ID of the document to retrieve.
+     * @returns A promise that resolves to the document details, including:
+     * - `status`: The status of the request.
+     * - `message`: An optional message providing additional details about the request result.
+     * - `result`: An array of `Document` objects, where each document includes:
+     *   - `id`: The unique ID of the document.
+     *   - `collectionId`: The ID of the collection the document belongs to.
+     *   - `path`: The file path of the document.
+     *   - `name`: The name of the document.
+     *   - `type`: The type of the document (e.g., PDF, Word).
+     *   - `layoutType`: The type of layout for the document.
+     *   - `layoutNodes`: The number of layout nodes in the document.
+     *   - `instructions`: Instructions related to the document.
+     *   - `job`: An optional job associated with the document.
+     *   - `layout`: An optional array containing layout details (could be `DocumentLayout[]`, `PhotoLayout[]`, `VideoLayout[]`, or `AudioLayout[]`).
+     *   - `dateCreated`: The creation date of the document.
+     *   - `dateUpdated`: The date the document was last updated.
      */
-    document: {
-      /**
-       * Fetches a specific document from a collection using its unique document ID.
-       * Learn more about usage at: https://gestell.ai/docs/reference#document
-       *
-       * @param collectionId - The ID of the collection containing the document.
-       * @param documentId - The ID of the document to retrieve.
-       * @returns A promise that resolves to the document details, including:
-       * - `status`: The status of the request.
-       * - `message`: An optional message providing additional details about the request result.
-       * - `result`: An array of `Document` objects, where each document includes:
-       *   - `id`: The unique ID of the document.
-       *   - `collectionId`: The ID of the collection the document belongs to.
-       *   - `path`: The file path of the document.
-       *   - `name`: The name of the document.
-       *   - `type`: The type of the document (e.g., PDF, Word).
-       *   - `layoutType`: The type of layout for the document.
-       *   - `layoutNodes`: The number of layout nodes in the document.
-       *   - `instructions`: Instructions related to the document.
-       *   - `job`: An optional job associated with the document.
-       *   - `layout`: An optional array containing layout details (could be `DocumentLayout[]`, `PhotoLayout[]`, `VideoLayout[]`, or `AudioLayout[]`).
-       *   - `dateCreated`: The creation date of the document.
-       *   - `dateUpdated`: The date the document was last updated.
-       */
-      get: (
-        collectionId: string,
-        documentId: string
-      ) => Promise<GetDocumentResponse>
-
-      /**
-       * Fetches a list of documents from a collection, with optional filtering and pagination.
-       * Learn more about usage at: https://gestell.ai/docs/reference#document
-       *
-       * @param collectionId - The ID of the collection containing the documents.
-       * @param payload - Optional parameters for filtering or pagination, including:
-       *   - `search`: A search query string to filter documents.
-       *   - `take`: The number of documents to retrieve.
-       *   - `skip`: The number of documents to skip for pagination.
-       *   - `extended`: Whether to retrieve extended information for the documents.
-       *   - `status`: Filter by the job status type.
-       *   - `nodes`: Filter by the job status for nodes.
-       *   - `edges`: Filter by the job status for edges.
-       *   - `vectors`: Filter by the job status for vectors.
-       *   - `category`: Filter by the job status for category.
-       * @returns A promise that resolves to the list of documents, including:
-       * - `status`: The status of the request.
-       * - `message`: An optional message providing additional details about the request result.
-       * - `result`: An array of `Document` objects, where each document includes:
-       *   - `id`: The unique ID of the document.
-       *   - `collectionId`: The ID of the collection the document belongs to.
-       *   - `path`: The file path of the document.
-       *   - `name`: The name of the document.
-       *   - `type`: The type of the document (e.g., PDF, Word).
-       *   - `layoutType`: The type of layout for the document.
-       *   - `layoutNodes`: The number of layout nodes in the document.
-       *   - `instructions`: Instructions related to the document.
-       *   - `job`: An optional job associated with the document.
-       *   - `layout`: An optional array containing layout details (could be `DocumentLayout[]`, `PhotoLayout[]`, `VideoLayout[]`, or `AudioLayout[]`).
-       *   - `dateCreated`: The creation date of the document.
-       *   - `dateUpdated`: The date the document was last updated.
-       */
-      list: (
-        collectionId: string,
-        payload?: GetDocumentsRequest
-      ) => Promise<GetDocumentsResponse>
-
-      /**
-       * Fetches a pre-signed URL for uploading a document to a collection.
-       * Learn more about usage at: https://gestell.ai/docs/reference#document
-       *
-       * @param collectionId - The ID of the collection for the document upload.
-       * @param payload - The document upload request details, including:
-       *   - `filename`: The name of the document file to upload.
-       *   - `type`: The MIME type of the document (e.g., 'application/pdf').
-       * @returns A promise that resolves to the pre-signed URL response, including:
-       *   - `status`: The status of the request.
-       *   - `message`: An optional message providing additional details about the request result.
-       *   - `path`: The path where the document will be uploaded.
-       *   - `url`: The pre-signed URL for uploading the document.
-       */
-      presign: (
-        collectionId: string,
-        payload: PresignDocumentRequest
-      ) => Promise<PresignDocumentResponse>
-
-      /**
-       * Allows the creation of a new document in a collection by providing the document details in the payload.
-       * Learn more about usage at: https://gestell.ai/docs/reference#document
-       *
-       * @param collectionId - The ID of the collection where the document will be created.
-       * @param payload - The details of the document to create, including:
-       *   - `name`: The name of the document.
-       *   - `path`: The file path of the document.
-       *   - `type`: The MIME type of the document (e.g., 'application/pdf').
-       *   - `instructions` (optional): Additional instructions related to the document.
-       *   - `job` (optional): Set to false to not dispatch a job
-       * @returns A promise that resolves to the response of the document creation request, including:
-       *   - `status`: The status of the document creation request.
-       *   - `message`: An optional message providing additional details about the request result.
-       *   - `id`: The unique identifier of the created document.
-       */
-      create: (
-        collectionId: string,
-        payload: CreateDocumentRequest
-      ) => Promise<CreateDocumentResponse>
-
-      /**
-       * Allows the updating of a document’s details in a collection. Requires the document ID and updated information.
-       * Learn more about usage at: https://gestell.ai/docs/reference#document
-       *
-       * @param collectionId - The ID of the collection containing the document.
-       * @param documentId - The ID of the document to update.
-       * @param payload - The updated document details, including:
-       *   - `name` (optional): The updated name of the document.
-       *   - `instructions` (optional): Updated instructions related to the document.
-       *   - `job` (optional): Set to true to dispatch a reprocessing job
-       * @returns A promise that resolves to the response of the update request, including:
-       *   - `status`: The status of the update request.
-       *   - `message`: An optional message providing additional details about the update result.
-       */
-      update: (
-        collectionId: string,
-        documentId: string,
-        payload: UpdateDocumentRequest
-      ) => Promise<BaseResponse>
-
-      /**
-       * Deletes an existing document from a collection based on its unique document ID.
-       * Learn more about usage at: https://gestell.ai/docs/reference#document
-       *
-       * @param collectionId - The ID of the collection containing the document.
-       * @param documentId - The ID of the document to delete.
-       * @returns A promise that resolves to the response of the delete request, including:
-       *   - `status`: The status of the delete request.
-       *   - `message`: An optional message providing additional details about the delete result.
-       */
-      delete: (
-        collectionId: string,
-        documentId: string
-      ) => Promise<BaseResponse>
-    }
+    get: (payload: GetDocumentRequest) => Promise<GetDocumentResponse>
 
     /**
-     * Manage jobs within a collection. You will need to retrieve the collection id to manage jobs.
+     * Fetches a list of documents from a collection, with optional filtering and pagination.
+     * Learn more about usage at: https://gestell.ai/docs/reference#document
+     *
+     * @param collectionId - The ID of the collection containing the documents.
+     * @param payload - Optional parameters for filtering or pagination, including:
+     *   - `search`: A search query string to filter documents.
+     *   - `take`: The number of documents to retrieve.
+     *   - `skip`: The number of documents to skip for pagination.
+     *   - `extended`: Whether to retrieve extended information for the documents.
+     *   - `status`: Filter by the job status type.
+     *   - `nodes`: Filter by the job status for nodes.
+     *   - `edges`: Filter by the job status for edges.
+     *   - `vectors`: Filter by the job status for vectors.
+     *   - `category`: Filter by the job status for category.
+     * @returns A promise that resolves to the list of documents, including:
+     * - `status`: The status of the request.
+     * - `message`: An optional message providing additional details about the request result.
+     * - `result`: An array of `Document` objects, where each document includes:
+     *   - `id`: The unique ID of the document.
+     *   - `collectionId`: The ID of the collection the document belongs to.
+     *   - `path`: The file path of the document.
+     *   - `name`: The name of the document.
+     *   - `type`: The type of the document (e.g., PDF, Word).
+     *   - `layoutType`: The type of layout for the document.
+     *   - `layoutNodes`: The number of layout nodes in the document.
+     *   - `instructions`: Instructions related to the document.
+     *   - `job`: An optional job associated with the document.
+     *   - `layout`: An optional array containing layout details (could be `DocumentLayout[]`, `PhotoLayout[]`, `VideoLayout[]`, or `AudioLayout[]`).
+     *   - `dateCreated`: The creation date of the document.
+     *   - `dateUpdated`: The date the document was last updated.
+     */
+    list: (payload: GetDocumentsRequest) => Promise<GetDocumentsResponse>
+
+    /**
+     * Fetches a pre-signed URL for uploading a document to a collection.
+     * Learn more about usage at: https://gestell.ai/docs/reference#document
+     *
+     * @param collectionId - The ID of the collection for the document upload.
+     * @param payload - The document upload request details, including:
+     *   - `filename`: The name of the document file to upload.
+     *   - `type`: The MIME type of the document (e.g., 'application/pdf').
+     * @returns A promise that resolves to the pre-signed URL response, including:
+     *   - `status`: The status of the request.
+     *   - `message`: An optional message providing additional details about the request result.
+     *   - `path`: The path where the document will be uploaded.
+     *   - `url`: The pre-signed URL for uploading the document.
+     */
+    presign: (
+      payload: PresignDocumentRequest
+    ) => Promise<PresignDocumentResponse>
+
+    /**
+     * Allows the creation of a new document in a collection by providing the document details in the payload.
+     * Learn more about usage at: https://gestell.ai/docs/reference#document
+     *
+     * @param collectionId - The ID of the collection where the document will be created.
+     * @param payload - The details of the document to create, including:
+     *   - `name`: The name of the document.
+     *   - `path`: The file path of the document.
+     *   - `type`: The MIME type of the document (e.g., 'application/pdf').
+     *   - `instructions` (optional): Additional instructions related to the document.
+     *   - `job` (optional): Set to false to not dispatch a job
+     * @returns A promise that resolves to the response of the document creation request, including:
+     *   - `status`: The status of the document creation request.
+     *   - `message`: An optional message providing additional details about the request result.
+     *   - `id`: The unique identifier of the created document.
+     */
+    create: (payload: CreateDocumentRequest) => Promise<CreateDocumentResponse>
+
+    /**
+     * Uploads a new document to a collection by providing the document details in the payload.
+     * Learn more about usage at: https://gestell.ai/docs/reference#document
+     *
+     * @param payload - The details of the document to upload, including:
+     * - `collectionId`: The ID of the collection where the document will be created.
+     * - `name`: The name of the document.
+     * - `type` (optional): The MIME type of the document (e.g., 'application/pdf').
+     * - `file`: The file to upload, which can be a string, Buffer, or File.
+     * - `instructions` (optional): Additional instructions related to the document.
+     * - `job` (optional): Set to `false` to skip dispatching a job for processing the document.
+     *
+     * @returns A promise that resolves to the response of the document upload request, including:
+     * - `status`: The status of the request (`OK` or `ERROR`).
+     * - `message`: An optional message providing additional details about the request result.
+     * - `id`: The unique identifier of the uploaded document.
+     */
+    upload: (payload: UploadDocumentRequest) => Promise<UploadDocumentResponse>
+
+    /**
+     * Allows the updating of a document’s details in a collection. Requires the document ID and updated information.
+     * Learn more about usage at: https://gestell.ai/docs/reference#document
+     *
+     * @param collectionId - The ID of the collection containing the document.
+     * @param documentId - The ID of the document to update.
+     * @param payload - The updated document details, including:
+     *   - `name` (optional): The updated name of the document.
+     *   - `instructions` (optional): Updated instructions related to the document.
+     *   - `job` (optional): Set to true to dispatch a reprocessing job
+     * @returns A promise that resolves to the response of the update request, including:
+     *   - `status`: The status of the update request.
+     *   - `message`: An optional message providing additional details about the update result.
+     */
+    update: (payload: UpdateDocumentRequest) => Promise<UpdateDocumentResponse>
+
+    /**
+     * Deletes an existing document from a collection based on its unique document ID.
+     * Learn more about usage at: https://gestell.ai/docs/reference#document
+     *
+     * @param collectionId - The ID of the collection containing the document.
+     * @param documentId - The ID of the document to delete.
+     * @returns A promise that resolves to the response of the delete request, including:
+     *   - `status`: The status of the delete request.
+     *   - `message`: An optional message providing additional details about the delete result.
+     */
+    delete: (paylaod: DeleteDocumentRequest) => Promise<DeleteDocumentResponse>
+  }
+
+  /**
+   * Manage jobs within a collection. You will need to retrieve the collection id to manage jobs.
+   * Learn more about usage at: https://gestell.ai/docs/reference#job
+   *
+   * @param collectionId - The ID of the collection
+   */
+  job: {
+    /**
+     * Fetches the details of a job using its unique job ID.
      * Learn more about usage at: https://gestell.ai/docs/reference#job
      *
-     * @param collectionId - The ID of the collection
+     * @param collectionId - The ID of the collection where the job exists.
+     * @param jobId - The ID of the job to retrieve.
+     * @returns A promise that resolves to the job details, including:
+     *   - `status`: The status of the job.
+     *   - `message`: An optional message providing additional details about the job.
+     *   - `result`: The detailed job information, including:
+     *     - `id`: The job's unique ID.
+     *     - `collectionId`: The collection to which the job belongs.
+     *     - `documentId`: The associated document ID.
+     *     - `status`: The current status of the job.
+     *     - `nodes`, `edges`, `vectors`, `category`: The job status for each of these components.
+     *     - `message`: A message providing job status details.
+     *     - `dateCreated`: The date the job was created.
+     *     - `dateUpdated`: The date the job was last updated.
      */
-    job: {
-      /**
-       * Fetches the details of a job using its unique job ID.
-       * Learn more about usage at: https://gestell.ai/docs/reference#job
-       *
-       * @param collectionId - The ID of the collection where the job exists.
-       * @param jobId - The ID of the job to retrieve.
-       * @returns A promise that resolves to the job details, including:
-       *   - `status`: The status of the job.
-       *   - `message`: An optional message providing additional details about the job.
-       *   - `result`: The detailed job information, including:
-       *     - `id`: The job's unique ID.
-       *     - `collectionId`: The collection to which the job belongs.
-       *     - `documentId`: The associated document ID.
-       *     - `status`: The current status of the job.
-       *     - `nodes`, `edges`, `vectors`, `category`: The job status for each of these components.
-       *     - `message`: A message providing job status details.
-       *     - `dateCreated`: The date the job was created.
-       *     - `dateUpdated`: The date the job was last updated.
-       */
-      get: (collectionId: string, jobId: string) => Promise<GetJobResponse>
+    get: (payload: GetJobRequest) => Promise<GetJobResponse>
 
-      /**
-       * Fetches a list of jobs associated with a collection, with optional filtering or pagination.
-       * Learn more about usage at: https://gestell.ai/docs/reference#job
-       *
-       * @param collectionId - The ID of the collection for which to fetch jobs.
-       * @param payload - Optional parameters for filtering or pagination.
-       * @returns A promise that resolves to a list of jobs.
-       */
-      list: (
-        collectionId: string,
-        payload?: GetJobsRequest
-      ) => Promise<GetJobsResponse>
+    /**
+     * Fetches a list of jobs associated with a collection, with optional filtering or pagination.
+     * Learn more about usage at: https://gestell.ai/docs/reference#job
+     *
+     * @param collectionId - The ID of the collection for which to fetch jobs.
+     * @param payload - Optional parameters for filtering or pagination.
+     * @returns A promise that resolves to a list of jobs.
+     */
+    list: (payload: GetJobsRequest) => Promise<GetJobsResponse>
 
-      /**
-       * Initiates a new job in the collection based on the provided parameters.
-       * Learn more about usage at: https://gestell.ai/docs/reference#job
-       *
-       * @param collectionId - The ID of the collection where the job will be created.
-       * @param payload - The job creation parameters, including:
-       *   - `ids`: An array of string IDs representing the entities to process in the job.
-       *   - `type`: The type of the job to create (e.g., 'status', 'nodes', 'vectors', 'edges', 'category').
-       * @returns A promise that resolves to the response of the job creation request, including:
-       *   - `status`: The result status of the job creation request.
-       *   - `message`: An optional message providing additional details about the job creation.
-       */
-      reprocess: (
-        collectionId: string,
-        payload: ReprocessDocumentsRequest
-      ) => Promise<ReprocessDocumentsResponse>
+    /**
+     * Initiates a new job in the collection based on the provided parameters.
+     * Learn more about usage at: https://gestell.ai/docs/reference#job
+     *
+     * @param collectionId - The ID of the collection where the job will be created.
+     * @param payload - The job creation parameters, including:
+     *   - `ids`: An array of string IDs representing the entities to process in the job.
+     *   - `type`: The type of the job to create (e.g., 'status', 'nodes', 'vectors', 'edges', 'category').
+     * @returns A promise that resolves to the response of the job creation request, including:
+     *   - `status`: The result status of the job creation request.
+     *   - `message`: An optional message providing additional details about the job creation.
+     */
+    reprocess: (
+      payload: ReprocessDocumentsRequest
+    ) => Promise<ReprocessDocumentsResponse>
 
-      /**
-       * Deletes an existing job from a collection based on its unique job ID.
-       * Learn more about usage at: https://gestell.ai/docs/reference#job
-       *
-       * @param collectionId - The ID of the collection where the job exists.
-       * @param jobId - The ID of the job to delete.
-       * @returns A promise that resolves to the response of the job deletion request, including:
-       *   - `status`: The result status of the job deletion request.
-       *   - `message`: An optional message providing additional details about the job deletion.
-       */
-      cancel: (collectionId: string, ids: string[]) => Promise<BaseResponse>
-    }
+    /**
+     * Deletes an existing job from a collection based on its unique job ID.
+     * Learn more about usage at: https://gestell.ai/docs/reference#job
+     *
+     * @param collectionId - The ID of the collection where the job exists.
+     * @param jobId - The ID of the job to delete.
+     * @returns A promise that resolves to the response of the job deletion request, including:
+     *   - `status`: The result status of the job deletion request.
+     *   - `message`: An optional message providing additional details about the job deletion.
+     */
+    cancel: (payload: CancelJobsRequest) => Promise<CancelJobsResponse>
   }
 
   /**
@@ -675,6 +751,9 @@ export class Gestell {
    * @property {boolean} [debug] - Flag to enable debug logging.
    */
   constructor(payload?: GestellInit) {
+    if (typeof window === 'undefined') {
+      require('dotenv')
+    }
     this.apiUrl =
       payload?.url ||
       process.env.GESTELL_API_URL ||
@@ -698,26 +777,33 @@ export class Gestell {
       create: this.createCollection.bind(this),
       update: this.updateCollection.bind(this),
       delete: this.deleteCollection.bind(this),
-      query: {
-        search: this.searchQuery.bind(this),
-        prompt: this.promptQuery.bind(this),
-        features: this.featuresQuery.bind(this),
-        table: this.tablesQuery.bind(this)
-      },
-      document: {
-        get: this.getDocument.bind(this),
-        list: this.getDocuments.bind(this),
-        presign: this.presignDocument.bind(this),
-        create: this.createDocument.bind(this),
-        update: this.updateDocument.bind(this),
-        delete: this.deleteDocument.bind(this)
-      },
-      job: {
-        get: this.getJob.bind(this),
-        list: this.getJobs.bind(this),
-        reprocess: this.reprocessJobs.bind(this),
-        cancel: this.cancelJobs.bind(this)
-      }
+      addCategory: this.addCategory.bind(this),
+      updateCategory: this.updateCategory.bind(this),
+      removeCategory: this.removeCategory.bind(this)
+    }
+
+    this.query = {
+      search: this.searchQuery.bind(this),
+      prompt: this.promptQuery.bind(this),
+      features: this.featuresQuery.bind(this),
+      table: this.tablesQuery.bind(this)
+    }
+
+    this.document = {
+      get: this.getDocument.bind(this),
+      list: this.getDocuments.bind(this),
+      upload: this.uploadDocument.bind(this),
+      presign: this.presignDocument.bind(this),
+      create: this.createDocument.bind(this),
+      update: this.updateDocument.bind(this),
+      delete: this.deleteDocument.bind(this)
+    }
+
+    this.job = {
+      get: this.getJob.bind(this),
+      list: this.getJobs.bind(this),
+      reprocess: this.reprocessJobs.bind(this),
+      cancel: this.cancelJobs.bind(this)
     }
   }
 
@@ -754,7 +840,7 @@ export class Gestell {
 
   private async updateOrganization(
     payload: UpdateOrganizationRequest
-  ): Promise<BaseResponse> {
+  ): Promise<UpdateOrganizationResponse> {
     return await updateOrganization({
       ...payload,
       apiKey: this.apiKey,
@@ -763,7 +849,9 @@ export class Gestell {
     })
   }
 
-  private async deleteOrganization(id: string): Promise<BaseResponse> {
+  private async deleteOrganization(
+    id: string
+  ): Promise<DeleteOrganizationResponse> {
     return await deleteOrganization({
       id,
       apiKey: this.apiKey,
@@ -772,7 +860,9 @@ export class Gestell {
     })
   }
 
-  private async addMembers(payload: AddMembersRequest): Promise<BaseResponse> {
+  private async addMembers(
+    payload: AddMembersRequest
+  ): Promise<AddMembersResponse> {
     return await addMembers({
       ...payload,
       apiKey: this.apiKey,
@@ -783,7 +873,7 @@ export class Gestell {
 
   private async removeMembers(
     payload: RemoveMembersRequest
-  ): Promise<BaseResponse> {
+  ): Promise<RemoveMembersResponse> {
     return await removeMembers({
       ...payload,
       apiKey: this.apiKey,
@@ -792,9 +882,11 @@ export class Gestell {
     })
   }
 
-  private async getCollection(id: string): Promise<GetCollectionResponse> {
+  private async getCollection(
+    collectionId: string
+  ): Promise<GetCollectionResponse> {
     return await getCollection({
-      id,
+      collectionId,
       apiKey: this.apiKey,
       apiUrl: this.apiUrl,
       debug: this.debug
@@ -834,7 +926,9 @@ export class Gestell {
     })
   }
 
-  private async deleteCollection(id: string): Promise<BaseResponse> {
+  private async deleteCollection(
+    id: string
+  ): Promise<DeleteCollectionResponse> {
     return await deleteCollection({
       id,
       apiKey: this.apiKey,
@@ -843,12 +937,43 @@ export class Gestell {
     })
   }
 
+  private async addCategory(
+    payload: AddCategoryRequest
+  ): Promise<AddCategoryResponse> {
+    return await addCategory({
+      ...payload,
+      apiKey: this.apiKey,
+      apiUrl: this.apiUrl,
+      debug: this.debug
+    })
+  }
+
+  private async updateCategory(
+    payload: UpdateCategoryRequest
+  ): Promise<UpdateCategoryResponse> {
+    return await updateCategory({
+      ...payload,
+      apiKey: this.apiKey,
+      apiUrl: this.apiUrl,
+      debug: this.debug
+    })
+  }
+
+  private async removeCategory(
+    payload: RemoveCategoryRequest
+  ): Promise<RemoveCategoryResponse> {
+    return await removeCategory({
+      ...payload,
+      apiKey: this.apiKey,
+      apiUrl: this.apiUrl,
+      debug: this.debug
+    })
+  }
+
   private async searchQuery(
-    collectionId: string,
     payload: QueryPayload
   ): Promise<SearchQueryResponse> {
     return await searchQuery({
-      id: collectionId,
       ...payload,
       apiKey: this.apiKey,
       apiUrl: this.apiUrl,
@@ -857,11 +982,9 @@ export class Gestell {
   }
 
   private async promptQuery(
-    collectionId: string,
     payload: PromptPayload
   ): Promise<ReadableStream<string>> {
     return await promptQuery({
-      id: collectionId,
       ...payload,
       apiKey: this.apiKey,
       apiUrl: this.apiUrl,
@@ -870,11 +993,9 @@ export class Gestell {
   }
 
   private async featuresQuery(
-    collectionId: string,
     payload: FeaturesQueryRequest
   ): Promise<FeaturesQueryResponse> {
     return await featuresQuery({
-      id: collectionId,
       ...payload,
       apiKey: this.apiKey,
       apiUrl: this.apiUrl,
@@ -883,11 +1004,9 @@ export class Gestell {
   }
 
   private async tablesQuery(
-    collectionId: string,
     payload: TablesQueryRequest
   ): Promise<TablesQueryResponse> {
     return await tablesQuery({
-      id: collectionId,
       ...payload,
       apiKey: this.apiKey,
       apiUrl: this.apiUrl,
@@ -896,12 +1015,10 @@ export class Gestell {
   }
 
   private async getDocument(
-    collectionId: string,
-    documentId: string
+    payload: GetDocumentRequest
   ): Promise<GetDocumentResponse> {
     return await getDocument({
-      collectionId,
-      documentId,
+      ...payload,
       apiKey: this.apiKey,
       apiUrl: this.apiUrl,
       debug: this.debug
@@ -909,11 +1026,20 @@ export class Gestell {
   }
 
   private async getDocuments(
-    collectionId: string,
-    payload?: GetDocumentsRequest
+    payload: GetDocumentsRequest
   ): Promise<GetDocumentsResponse> {
     return await getDocuments({
-      id: collectionId,
+      ...payload,
+      apiKey: this.apiKey,
+      apiUrl: this.apiUrl,
+      debug: this.debug
+    })
+  }
+
+  private async uploadDocument(
+    payload: UploadDocumentRequest
+  ): Promise<UploadDocumentResponse> {
+    return await uploadDocument({
       ...payload,
       apiKey: this.apiKey,
       apiUrl: this.apiUrl,
@@ -922,11 +1048,9 @@ export class Gestell {
   }
 
   private async presignDocument(
-    collectionId: string,
     payload: PresignDocumentRequest
   ): Promise<PresignDocumentResponse> {
     return await presignDocument({
-      id: collectionId,
       ...payload,
       apiKey: this.apiKey,
       apiUrl: this.apiUrl,
@@ -935,11 +1059,9 @@ export class Gestell {
   }
 
   private async createDocument(
-    collectionId: string,
     payload: CreateDocumentRequest
   ): Promise<CreateDocumentResponse> {
     return await createDocument({
-      id: collectionId,
       ...payload,
       apiKey: this.apiKey,
       apiUrl: this.apiUrl,
@@ -948,13 +1070,9 @@ export class Gestell {
   }
 
   private async updateDocument(
-    collectionId: string,
-    documentId: string,
     payload: UpdateDocumentRequest
-  ): Promise<BaseResponse> {
+  ): Promise<UpdateDocumentResponse> {
     return await updateDocument({
-      id: collectionId,
-      documentId,
       ...payload,
       apiKey: this.apiKey,
       apiUrl: this.apiUrl,
@@ -963,37 +1081,27 @@ export class Gestell {
   }
 
   private async deleteDocument(
-    collectionId: string,
-    documentId: string
-  ): Promise<BaseResponse> {
+    payload: DeleteDocumentRequest
+  ): Promise<DeleteDocumentResponse> {
     return await deleteDocument({
-      collectionId,
-      documentId,
+      ...payload,
       apiKey: this.apiKey,
       apiUrl: this.apiUrl,
       debug: this.debug
     })
   }
 
-  private async getJob(
-    collectionId: string,
-    jobId: string
-  ): Promise<GetJobResponse> {
+  private async getJob(payload: GetJobRequest): Promise<GetJobResponse> {
     return await getJob({
-      collectionId,
-      jobId,
+      ...payload,
       apiKey: this.apiKey,
       apiUrl: this.apiUrl,
       debug: this.debug
     })
   }
 
-  private async getJobs(
-    collectionId: string,
-    payload?: GetJobsRequest
-  ): Promise<GetJobsResponse> {
+  private async getJobs(payload: GetJobsRequest): Promise<GetJobsResponse> {
     return await getJobs({
-      id: collectionId,
       ...payload,
       apiKey: this.apiKey,
       apiUrl: this.apiUrl,
@@ -1002,11 +1110,9 @@ export class Gestell {
   }
 
   private async reprocessJobs(
-    collectionId: string,
     payload: ReprocessDocumentsRequest
   ): Promise<ReprocessDocumentsResponse> {
     return await reprocessDocument({
-      collectionId,
       ...payload,
       apiKey: this.apiKey,
       apiUrl: this.apiUrl,
@@ -1015,12 +1121,10 @@ export class Gestell {
   }
 
   private async cancelJobs(
-    collectionId: string,
-    ids: string[]
+    payload: CancelJobsRequest
   ): Promise<CancelJobsResponse> {
     return await cancelJobs({
-      collectionId,
-      ids,
+      ...payload,
       apiKey: this.apiKey,
       apiUrl: this.apiUrl,
       debug: this.debug

@@ -1,34 +1,24 @@
 import type { BaseRequest, BaseResponse } from 'types/base'
-import { Collection } from 'types/collection'
+import { Collection, CollectionStats } from 'types/collection'
 import loadFetch from 'util/fetch'
 
-export interface GetCollectionsRequest {
-  search?: string
-  take?: number
-  skip?: number
-  extended?: boolean
+export interface GetCollectionRequest {
+  collectionId: string
 }
 
-export interface GetCollectionsResponse extends BaseResponse {
-  result: Collection[]
+export interface GetCollectionResponse extends BaseResponse {
+  result: Collection | null
+  stats: CollectionStats | null
 }
 
-export async function getCollections({
+export async function getCollection({
   apiKey,
   apiUrl,
   debug,
-  search = '',
-  take = 10,
-  skip = 0,
-  extended = false
-}: GetCollectionsRequest & BaseRequest): Promise<GetCollectionsResponse> {
+  collectionId
+}: GetCollectionRequest & BaseRequest): Promise<GetCollectionResponse> {
   const fetch = await loadFetch()
-  const url = new URL(`/api/collection`, apiUrl)
-
-  url.searchParams.set('search', search)
-  url.searchParams.set('take', take.toString())
-  url.searchParams.set('skip', skip.toString())
-  url.searchParams.set('extended', extended.toString())
+  const url = new URL(`/api/collection/${collectionId}`, apiUrl)
 
   const payload = await fetch(url, {
     method: 'GET',
@@ -45,12 +35,12 @@ export async function getCollections({
     return {
       status: 'ERROR',
       message:
-        errorResponse?.message || 'There was an error retrieving collections',
-      result: []
+        errorResponse?.message || 'There was an retrieving the collection',
+      result: null,
+      stats: null
     }
   }
-
-  const response = (await payload.json()) as GetCollectionsResponse
+  const response = (await payload.json()) as GetCollectionResponse
 
   return response
 }

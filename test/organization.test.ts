@@ -46,7 +46,7 @@ describe('Organization', () => {
 
   test('Update', async () => {
     const response = await gestell.organization.update({
-      id: organizationId,
+      organizationId,
       name: 'Automated Test Organization Updated',
       description: 'This is an automated test organization updated'
     })
@@ -56,7 +56,7 @@ describe('Organization', () => {
 
   test('Add Member', async () => {
     const response = await gestell.organization.addMembers({
-      id: organizationId,
+      organizationId,
       members: [
         {
           id: 'test@chriscates.ca',
@@ -69,7 +69,7 @@ describe('Organization', () => {
 
   test('Remove Member', async () => {
     const response = await gestell.organization.removeMembers({
-      id: organizationId,
+      organizationId,
       members: ['test@chriscates.ca']
     })
     expect(response.status).toBe('OK')

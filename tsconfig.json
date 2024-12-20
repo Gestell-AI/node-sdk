@@ -3,12 +3,10 @@
     "lib": ["ESNext", "DOM"],
     "types": ["bun"],
     "outDir": "dist",
-    "baseUrl": "src",
-    "target": "ES6",
-    "moduleDetection": "auto",
+    "baseUrl": "./src",
+    "target": "ESNext",
     "module": "NodeNext",
-    "moduleResolution": "nodenext",
-    "allowImportingTsExtensions": true,
+    "moduleResolution": "NodeNext",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
@@ -16,18 +14,17 @@
     "skipLibCheck": true,
     "noImplicitReturns": true,
     "noImplicitAny": true,
-    "emitDeclarationOnly": true,
-    "declaration": true,
-    "declarationMap": true,
-    "sourceMap": true,
-    "removeComments": false
+    "removeComments": false,
+    "paths": {
+      "node-fetch": ["node_modules/node-fetch"]
+    }
   },
   "include": [
-    "./eslint.config.mjs",
     "src/**/*.ts",
     "test/**/*"
   ],
   "exclude": [
+    "eslint.config.mjs",
     "node_modules",
     "dist"
   ]

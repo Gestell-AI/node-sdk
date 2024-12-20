@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'bun:test'
-import { createReadStream } from 'fs'
+import { createReadStream, readFileSync } from 'fs'
 import Gestell from 'index'
 import { join } from 'path'
 
@@ -37,13 +37,11 @@ describe('Document', () => {
   test('Presign, Upload and Create Document', async () => {
     const { default: fetch } = await import('node-fetch')
 
-    const { status, path, url } = await gestell.collection.document.presign(
+    const { status, path, url } = await gestell.document.presign({
       collectionId,
-      {
-        type: 'image/jpeg',
-        filename: 'sample.jpg'
-      }
-    )
+      type: 'image/jpeg',
+      filename: 'sample.jpg'
+    })
     expect(status).toEqual('OK')
 
     await fetch(url, {
@@ -54,7 +52,8 @@ describe('Document', () => {
       body: createReadStream(join(process.cwd(), 'test', 'sample.jpg'))
     })
 
-    const response = await gestell.collection.document.create(collectionId, {
+    const response = await gestell.document.create({
+      collectionId,
       name: 'sample.jpg',
       path,
       type: 'image/jpeg'
@@ -64,33 +63,50 @@ describe('Document', () => {
     documentId = response.id
   })
 
+  test('Upload Document as Buffer and String', async () => {
+    const file = join(process.cwd(), 'test', 'sample.jpg')
+
+    const response = await gestell.document.upload({
+      collectionId,
+      name: 'sample-2.jpg',
+      file
+    })
+
+    expect(response.status).toEqual('OK')
+
+    const response2 = await gestell.document.upload({
+      collectionId,
+      name: 'sample-2.jpg',
+      type: 'image/jpeg',
+      file: readFileSync(file)
+    })
+
+    expect(response2.status).toEqual('OK')
+  })
+
   test('Update', async () => {
-    const response = await gestell.collection.document.update(
+    const response = await gestell.document.update({
       collectionId,
       documentId,
-      {
-        name: 'sample-updated.jpg'
-      }
-    )
+      name: 'sample-updated.jpg'
+    })
     expect(response.status).toEqual('OK')
   })
 
   test('Get', async () => {
-    const response = await gestell.collection.document.get(
-      collectionId,
-      documentId
-    )
+    const response = await gestell.document.get({ collectionId, documentId })
     expect(response.status).toEqual('OK')
     jobId = response.result?.job?.id || ''
   })
 
   test('Get Document Job', async () => {
-    const response = await gestell.collection.job.get(collectionId, jobId)
+    const response = await gestell.job.get({ collectionId, jobId })
     expect(response.status).toEqual('OK')
   })
 
   test('Reprocess Document Job', async () => {
-    const response = await gestell.collection.job.reprocess(collectionId, {
+    const response = await gestell.job.reprocess({
+      collectionId,
       type: 'status',
       ids: [jobId]
     })
@@ -98,15 +114,12 @@ describe('Document', () => {
   })
 
   test('Cancel Document Job', async () => {
-    const response = await gestell.collection.job.cancel(collectionId, [jobId])
+    const response = await gestell.job.cancel({ collectionId, ids: [jobId] })
     expect(response.status).toEqual('OK')
   })
 
   test('Delete', async () => {
-    const response = await gestell.collection.document.delete(
-      collectionId,
-      documentId
-    )
+    const response = await gestell.document.delete({ collectionId, documentId })
     expect(response.status).toEqual('OK')
   })
 

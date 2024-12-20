@@ -2,33 +2,22 @@ import type { BaseRequest, BaseResponse } from 'types/base'
 import { Organization } from 'types/organization'
 import loadFetch from 'util/fetch'
 
-export interface GetOrganizationsRequest {
-  search?: string
-  take?: number
-  skip?: number
-  extended?: boolean
+export interface GetOrganizationRequest {
+  id: string
 }
 
-export interface GetOrganizationsResponse extends BaseResponse {
-  result: Organization[]
+export interface GetOrganizationResponse extends BaseResponse {
+  result: Organization | null
 }
 
-export async function getOrganizations({
+export async function getOrganization({
   apiKey,
   apiUrl,
   debug,
-  search = '',
-  take = 10,
-  skip = 0,
-  extended = false
-}: GetOrganizationsRequest & BaseRequest): Promise<GetOrganizationsResponse> {
+  id
+}: GetOrganizationRequest & BaseRequest): Promise<GetOrganizationResponse> {
   const fetch = await loadFetch()
-  const url = new URL(`/api/organization`, apiUrl)
-
-  url.searchParams.set('search', search)
-  url.searchParams.set('take', take.toString())
-  url.searchParams.set('skip', skip.toString())
-  url.searchParams.set('extended', extended.toString())
+  const url = new URL(`/api/organization/${id}`, apiUrl)
 
   const payload = await fetch(url, {
     method: 'GET',
@@ -45,12 +34,13 @@ export async function getOrganizations({
     return {
       status: 'ERROR',
       message:
-        errorResponse?.message || 'There was an error retrieving organizations',
-      result: []
+        errorResponse?.message ||
+        'There was an error retrieving the organization',
+      result: null
     }
   }
 
-  const response = (await payload.json()) as GetOrganizationsResponse
+  const response = (await payload.json()) as GetOrganizationResponse
 
   return response
 }

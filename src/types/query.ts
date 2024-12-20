@@ -2,6 +2,7 @@ export type SearchType = 'summary' | 'phrase' | 'keywords'
 export type SearchMethod = 'fast' | 'normal' | 'precise'
 
 export interface QueryPayload {
+  collectionId: string
   categoryId?: string
   prompt: string
   method?: SearchMethod

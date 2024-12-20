@@ -58,7 +58,8 @@ describe('Collection', () => {
   })
 
   test('Query Search', async () => {
-    const response = await gestell.collection.query.search(collectionId, {
+    const response = await gestell.query.search({
+      collectionId,
       prompt: 'Unga Bunga, do not return anything, Unga Bunga',
       method: 'fast'
     })
@@ -66,7 +67,8 @@ describe('Collection', () => {
   })
 
   test('Query Prompt', async () => {
-    const response = await gestell.collection.query.prompt(collectionId, {
+    const response = await gestell.query.prompt({
+      collectionId,
       prompt: 'Unga Bunga, do not return anything, Unga Bunga',
       method: 'fast',
       cot: false,
@@ -86,14 +88,16 @@ describe('Collection', () => {
   })
 
   test('Query Features', async () => {
-    const response = await gestell.collection.query.features(collectionId, {
+    const response = await gestell.query.features({
+      collectionId,
       categoryId: featureId
     })
     expect(response.status).toEqual('OK')
   })
 
   test('Query Table', async () => {
-    const response = await gestell.collection.query.table(collectionId, {
+    const response = await gestell.query.table({
+      collectionId,
       categoryId: tableId
     })
     expect(response.status).toEqual('OK')

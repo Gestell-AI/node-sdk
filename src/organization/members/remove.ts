@@ -2,19 +2,21 @@ import type { BaseRequest, BaseResponse } from 'types/base'
 import loadFetch from 'util/fetch'
 
 export interface RemoveMembersRequest {
-  id: string
+  organizationId: string
   members: string[]
 }
+
+export type RemoveMembersResponse = BaseResponse
 
 export async function removeMembers({
   apiKey,
   apiUrl,
   debug,
-  id,
+  organizationId,
   members
-}: RemoveMembersRequest & BaseRequest): Promise<BaseResponse> {
+}: RemoveMembersRequest & BaseRequest): Promise<RemoveMembersResponse> {
   const fetch = await loadFetch()
-  const url = new URL(`/api/organization/${id}/member`, apiUrl)
+  const url = new URL(`/api/organization/${organizationId}/member`, apiUrl)
 
   for (const member of members) {
     url.searchParams.append('id', member)

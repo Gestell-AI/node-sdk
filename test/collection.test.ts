@@ -6,6 +6,7 @@ const gestell = new Gestell()
 describe('Collection', () => {
   let organizationId = ''
   let collectionId = ''
+  let categoryId = ''
 
   test('Create Test Organization', async () => {
     const response = await gestell.organization.create({
@@ -59,9 +60,38 @@ describe('Collection', () => {
 
   test('Update', async () => {
     const response = await gestell.collection.update({
-      id: collectionId,
+      collectionId,
       name: 'Automated Test Collection updated',
       description: 'An automated test collection updated'
+    })
+    expect(response.status).toEqual('OK')
+  })
+
+  test('Add Category', async () => {
+    const response = await gestell.collection.addCategory({
+      collectionId,
+      name: 'Automated Test Category',
+      type: 'concepts',
+      instructions: 'Hello World'
+    })
+    expect(response.status).toEqual('OK')
+    categoryId = response.id
+  })
+
+  test('Update Category', async () => {
+    const response = await gestell.collection.updateCategory({
+      collectionId,
+      categoryId,
+      name: 'Automated Test Category Update',
+      instructions: 'Hello World Update'
+    })
+    expect(response.status).toEqual('OK')
+  })
+
+  test('Remove Category', async () => {
+    const response = await gestell.collection.removeCategory({
+      collectionId,
+      categoryId
     })
     expect(response.status).toEqual('OK')
   })

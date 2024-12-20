@@ -2,21 +2,24 @@ import type { BaseRequest, BaseResponse } from 'types/base'
 import loadFetch from 'util/fetch'
 
 export interface UpdateOrganizationRequest {
-  id: string
+  organizationId: string
   name: string
   description: string
 }
+
+export type UpdateOrganizationResponse = BaseResponse
 
 export async function updateOrganization({
   apiKey,
   apiUrl,
   debug,
-  id,
+  organizationId,
   name,
   description
-}: UpdateOrganizationRequest & BaseRequest): Promise<BaseResponse> {
+}: UpdateOrganizationRequest &
+  BaseRequest): Promise<UpdateOrganizationResponse> {
   const fetch = await loadFetch()
-  const url = new URL(`/api/organization/${id}`, apiUrl)
+  const url = new URL(`/api/organization/${organizationId}`, apiUrl)
 
   const payload = await fetch(url, {
     method: 'PATCH',
