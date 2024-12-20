@@ -1,5 +1,5 @@
-import type { BaseRequest, BaseResponse } from 'types/base';
-import { CategoryType } from 'types/category';
+import type { BaseRequest, BaseResponse } from '@gestell/types/base';
+import { CategoryType } from '@gestell/types/category';
 export interface AddCategoryRequest {
     collectionId: string;
     name: string;

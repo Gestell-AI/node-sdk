@@ -1,37 +1,40 @@
-import { addCategory } from 'collection/addCategory';
-import { createCollection } from 'collection/create';
-import { deleteCollection } from 'collection/delete';
-import { getCollection } from 'collection/get';
-import { getCollections } from 'collection/list';
-import { removeCategory } from 'collection/removeCategory';
-import { updateCollection } from 'collection/update';
-import { updateCategory } from 'collection/updateCategory';
-import { createDocument } from 'document/create';
-import { deleteDocument } from 'document/delete';
-import { getDocument } from 'document/get';
-import { getDocuments } from 'document/list';
-import { presignDocument } from 'document/presign';
-import { updateDocument } from 'document/update';
-import { uploadDocument } from 'document/upload';
-import { cancelJobs } from 'job/cancel';
-import { getJob } from 'job/get';
-import { getJobs } from 'job/list';
-import { reprocessDocument } from 'job/reprocess';
-import { createOrganization } from 'organization/create';
-import { deleteOrganization } from 'organization/delete';
-import { getOrganization } from 'organization/get';
-import { getOrganizations } from 'organization/list';
-import { addMembers } from 'organization/members/add';
-import { removeMembers } from 'organization/members/remove';
-import { updateOrganization } from 'organization/update';
-import { featuresQuery } from 'query/features';
-import { promptQuery } from 'query/prompt';
-import { searchQuery } from 'query/search';
-import { tablesQuery } from 'query/table';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Gestell = void 0;
+const addCategory_1 = require("./collection/addCategory");
+const create_1 = require("./collection/create");
+const delete_1 = require("./collection/delete");
+const get_1 = require("./collection/get");
+const list_1 = require("./collection/list");
+const removeCategory_1 = require("./collection/removeCategory");
+const update_1 = require("./collection/update");
+const updateCategory_1 = require("./collection/updateCategory");
+const create_2 = require("./document/create");
+const delete_2 = require("./document/delete");
+const get_2 = require("./document/get");
+const list_2 = require("./document/list");
+const presign_1 = require("./document/presign");
+const update_2 = require("./document/update");
+const upload_1 = require("./document/upload");
+const cancel_1 = require("./job/cancel");
+const get_3 = require("./job/get");
+const list_3 = require("./job/list");
+const reprocess_1 = require("./job/reprocess");
+const create_3 = require("./organization/create");
+const delete_3 = require("./organization/delete");
+const get_4 = require("./organization/get");
+const list_4 = require("./organization/list");
+const add_1 = require("./organization/members/add");
+const remove_1 = require("./organization/members/remove");
+const update_3 = require("./organization/update");
+const features_1 = require("./query/features");
+const prompt_1 = require("./query/prompt");
+const search_1 = require("./query/search");
+const table_1 = require("./query/table");
 /**
  * The Gestell SDK Instance
  */
-export class Gestell {
+class Gestell {
     apiUrl;
     apiKey;
     debug;
@@ -79,7 +82,7 @@ export class Gestell {
      */
     constructor(payload) {
         if (typeof window === 'undefined') {
-            require('dotenv');
+            require('dotenv').config();
         }
         this.apiUrl =
             payload?.url ||
@@ -129,7 +132,7 @@ export class Gestell {
         };
     }
     async getOrganization(id) {
-        return await getOrganization({
+        return await (0, get_4.getOrganization)({
             id,
             apiKey: this.apiKey,
             apiUrl: this.apiUrl,
@@ -137,7 +140,7 @@ export class Gestell {
         });
     }
     async getOrganizations(payload) {
-        return await getOrganizations({
+        return await (0, list_4.getOrganizations)({
             ...payload,
             apiKey: this.apiKey,
             apiUrl: this.apiUrl,
@@ -145,7 +148,7 @@ export class Gestell {
         });
     }
     async createOrganization(payload) {
-        return await createOrganization({
+        return await (0, create_3.createOrganization)({
             ...payload,
             apiKey: this.apiKey,
             apiUrl: this.apiUrl,
@@ -153,7 +156,7 @@ export class Gestell {
         });
     }
     async updateOrganization(payload) {
-        return await updateOrganization({
+        return await (0, update_3.updateOrganization)({
             ...payload,
             apiKey: this.apiKey,
             apiUrl: this.apiUrl,
@@ -161,7 +164,7 @@ export class Gestell {
         });
     }
     async deleteOrganization(id) {
-        return await deleteOrganization({
+        return await (0, delete_3.deleteOrganization)({
             id,
             apiKey: this.apiKey,
             apiUrl: this.apiUrl,
@@ -169,7 +172,7 @@ export class Gestell {
         });
     }
     async addMembers(payload) {
-        return await addMembers({
+        return await (0, add_1.addMembers)({
             ...payload,
             apiKey: this.apiKey,
             apiUrl: this.apiUrl,
@@ -177,7 +180,7 @@ export class Gestell {
         });
     }
     async removeMembers(payload) {
-        return await removeMembers({
+        return await (0, remove_1.removeMembers)({
             ...payload,
             apiKey: this.apiKey,
             apiUrl: this.apiUrl,
@@ -185,7 +188,7 @@ export class Gestell {
         });
     }
     async getCollection(collectionId) {
-        return await getCollection({
+        return await (0, get_1.getCollection)({
             collectionId,
             apiKey: this.apiKey,
             apiUrl: this.apiUrl,
@@ -193,7 +196,7 @@ export class Gestell {
         });
     }
     async getCollections(payload) {
-        return await getCollections({
+        return await (0, list_1.getCollections)({
             ...payload,
             apiKey: this.apiKey,
             apiUrl: this.apiUrl,
@@ -201,7 +204,7 @@ export class Gestell {
         });
     }
     async createCollection(payload) {
-        return await createCollection({
+        return await (0, create_1.createCollection)({
             ...payload,
             apiKey: this.apiKey,
             apiUrl: this.apiUrl,
@@ -209,7 +212,7 @@ export class Gestell {
         });
     }
     async updateCollection(payload) {
-        return await updateCollection({
+        return await (0, update_1.updateCollection)({
             ...payload,
             apiKey: this.apiKey,
             apiUrl: this.apiUrl,
@@ -217,7 +220,7 @@ export class Gestell {
         });
     }
     async deleteCollection(id) {
-        return await deleteCollection({
+        return await (0, delete_1.deleteCollection)({
             id,
             apiKey: this.apiKey,
             apiUrl: this.apiUrl,
@@ -225,7 +228,7 @@ export class Gestell {
         });
     }
     async addCategory(payload) {
-        return await addCategory({
+        return await (0, addCategory_1.addCategory)({
             ...payload,
             apiKey: this.apiKey,
             apiUrl: this.apiUrl,
@@ -233,7 +236,7 @@ export class Gestell {
         });
     }
     async updateCategory(payload) {
-        return await updateCategory({
+        return await (0, updateCategory_1.updateCategory)({
             ...payload,
             apiKey: this.apiKey,
             apiUrl: this.apiUrl,
@@ -241,7 +244,7 @@ export class Gestell {
         });
     }
     async removeCategory(payload) {
-        return await removeCategory({
+        return await (0, removeCategory_1.removeCategory)({
             ...payload,
             apiKey: this.apiKey,
             apiUrl: this.apiUrl,
@@ -249,7 +252,7 @@ export class Gestell {
         });
     }
     async searchQuery(payload) {
-        return await searchQuery({
+        return await (0, search_1.searchQuery)({
             ...payload,
             apiKey: this.apiKey,
             apiUrl: this.apiUrl,
@@ -257,7 +260,7 @@ export class Gestell {
         });
     }
     async promptQuery(payload) {
-        return await promptQuery({
+        return await (0, prompt_1.promptQuery)({
             ...payload,
             apiKey: this.apiKey,
             apiUrl: this.apiUrl,
@@ -265,7 +268,7 @@ export class Gestell {
         });
     }
     async featuresQuery(payload) {
-        return await featuresQuery({
+        return await (0, features_1.featuresQuery)({
             ...payload,
             apiKey: this.apiKey,
             apiUrl: this.apiUrl,
@@ -273,7 +276,7 @@ export class Gestell {
         });
     }
     async tablesQuery(payload) {
-        return await tablesQuery({
+        return await (0, table_1.tablesQuery)({
             ...payload,
             apiKey: this.apiKey,
             apiUrl: this.apiUrl,
@@ -281,7 +284,7 @@ export class Gestell {
         });
     }
     async getDocument(payload) {
-        return await getDocument({
+        return await (0, get_2.getDocument)({
             ...payload,
             apiKey: this.apiKey,
             apiUrl: this.apiUrl,
@@ -289,7 +292,7 @@ export class Gestell {
         });
     }
     async getDocuments(payload) {
-        return await getDocuments({
+        return await (0, list_2.getDocuments)({
             ...payload,
             apiKey: this.apiKey,
             apiUrl: this.apiUrl,
@@ -297,7 +300,7 @@ export class Gestell {
         });
     }
     async uploadDocument(payload) {
-        return await uploadDocument({
+        return await (0, upload_1.uploadDocument)({
             ...payload,
             apiKey: this.apiKey,
             apiUrl: this.apiUrl,
@@ -305,7 +308,7 @@ export class Gestell {
         });
     }
     async presignDocument(payload) {
-        return await presignDocument({
+        return await (0, presign_1.presignDocument)({
             ...payload,
             apiKey: this.apiKey,
             apiUrl: this.apiUrl,
@@ -313,7 +316,7 @@ export class Gestell {
         });
     }
     async createDocument(payload) {
-        return await createDocument({
+        return await (0, create_2.createDocument)({
             ...payload,
             apiKey: this.apiKey,
             apiUrl: this.apiUrl,
@@ -321,7 +324,7 @@ export class Gestell {
         });
     }
     async updateDocument(payload) {
-        return await updateDocument({
+        return await (0, update_2.updateDocument)({
             ...payload,
             apiKey: this.apiKey,
             apiUrl: this.apiUrl,
@@ -329,7 +332,7 @@ export class Gestell {
         });
     }
     async deleteDocument(payload) {
-        return await deleteDocument({
+        return await (0, delete_2.deleteDocument)({
             ...payload,
             apiKey: this.apiKey,
             apiUrl: this.apiUrl,
@@ -337,7 +340,7 @@ export class Gestell {
         });
     }
     async getJob(payload) {
-        return await getJob({
+        return await (0, get_3.getJob)({
             ...payload,
             apiKey: this.apiKey,
             apiUrl: this.apiUrl,
@@ -345,7 +348,7 @@ export class Gestell {
         });
     }
     async getJobs(payload) {
-        return await getJobs({
+        return await (0, list_3.getJobs)({
             ...payload,
             apiKey: this.apiKey,
             apiUrl: this.apiUrl,
@@ -353,7 +356,7 @@ export class Gestell {
         });
     }
     async reprocessJobs(payload) {
-        return await reprocessDocument({
+        return await (0, reprocess_1.reprocessDocument)({
             ...payload,
             apiKey: this.apiKey,
             apiUrl: this.apiUrl,
@@ -361,7 +364,7 @@ export class Gestell {
         });
     }
     async cancelJobs(payload) {
-        return await cancelJobs({
+        return await (0, cancel_1.cancelJobs)({
             ...payload,
             apiKey: this.apiKey,
             apiUrl: this.apiUrl,
@@ -369,4 +372,5 @@ export class Gestell {
         });
     }
 }
-export default Gestell;
+exports.Gestell = Gestell;
+exports.default = Gestell;

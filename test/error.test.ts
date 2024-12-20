@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'bun:test'
-import Gestell from 'index'
+import Gestell from '@gestell/index'
 
 const gestell = new Gestell({
   key: 'INVALID KEY',

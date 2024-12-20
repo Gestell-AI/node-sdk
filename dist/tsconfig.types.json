@@ -1,12 +1,12 @@
 {
-  "extends": "./tsconfig.json",
+  "extends": "../tsconfig.json",
   "compilerOptions": {
-    "outDir": "./dist/types",
+    "outDir": "./types",
     "declaration": true,
     "emitDeclarationOnly": true
   },
   "exclude": [
-    "test",
-    "eslint.config.mjs"
+    "../test",
+    "../eslint.config.mjs"
   ]
 }

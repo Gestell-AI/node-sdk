@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'bun:test'
 import { createReadStream, readFileSync } from 'fs'
-import Gestell from 'index'
 import { join } from 'path'
+import Gestell from '@gestell/index'
 
 const gestell = new Gestell()
 

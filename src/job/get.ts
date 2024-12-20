@@ -1,6 +1,6 @@
-import type { BaseRequest, BaseResponse } from 'types/base'
-import { Job } from 'types/job'
-import loadFetch from 'util/fetch'
+import type { BaseRequest, BaseResponse } from '@gestell/types/base'
+import { Job } from '@gestell/types/job'
+import loadFetch from '@gestell/util/fetch'
 
 export interface GetJobRequest {
   collectionId: string

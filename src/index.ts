@@ -2,120 +2,130 @@ import {
   addCategory,
   AddCategoryRequest,
   AddCategoryResponse
-} from 'collection/addCategory'
+} from '@gestell/collection/addCategory'
 import {
   createCollection,
   CreateCollectionRequest,
   CreateCollectionResponse
-} from 'collection/create'
-import { deleteCollection, DeleteCollectionResponse } from 'collection/delete'
-import { getCollection, GetCollectionResponse } from 'collection/get'
+} from '@gestell/collection/create'
+import {
+  deleteCollection,
+  DeleteCollectionResponse
+} from '@gestell/collection/delete'
+import { getCollection, GetCollectionResponse } from '@gestell/collection/get'
 import {
   getCollections,
   GetCollectionsRequest,
   GetCollectionsResponse
-} from 'collection/list'
+} from '@gestell/collection/list'
 import {
   removeCategory,
   RemoveCategoryRequest,
   RemoveCategoryResponse
-} from 'collection/removeCategory'
+} from '@gestell/collection/removeCategory'
 import {
   updateCollection,
   UpdateCollectionRequest,
   UpdateCollectionResponse
-} from 'collection/update'
+} from '@gestell/collection/update'
 import {
   updateCategory,
   UpdateCategoryRequest,
   UpdateCategoryResponse
-} from 'collection/updateCategory'
+} from '@gestell/collection/updateCategory'
 import {
   createDocument,
   CreateDocumentRequest,
   CreateDocumentResponse
-} from 'document/create'
+} from '@gestell/document/create'
 import {
   deleteDocument,
   DeleteDocumentRequest,
   DeleteDocumentResponse
-} from 'document/delete'
+} from '@gestell/document/delete'
 import {
   getDocument,
   GetDocumentRequest,
   GetDocumentResponse
-} from 'document/get'
+} from '@gestell/document/get'
 import {
   getDocuments,
   GetDocumentsRequest,
   GetDocumentsResponse
-} from 'document/list'
+} from '@gestell/document/list'
 import {
   presignDocument,
   PresignDocumentRequest,
   PresignDocumentResponse
-} from 'document/presign'
+} from '@gestell/document/presign'
 import {
   updateDocument,
   UpdateDocumentRequest,
   UpdateDocumentResponse
-} from 'document/update'
+} from '@gestell/document/update'
 import {
   uploadDocument,
   UploadDocumentRequest,
   UploadDocumentResponse
-} from 'document/upload'
-import { cancelJobs, CancelJobsRequest, CancelJobsResponse } from 'job/cancel'
-import { getJob, GetJobRequest, GetJobResponse } from 'job/get'
-import { getJobs, GetJobsRequest, GetJobsResponse } from 'job/list'
+} from '@gestell/document/upload'
+import {
+  cancelJobs,
+  CancelJobsRequest,
+  CancelJobsResponse
+} from '@gestell/job/cancel'
+import { getJob, GetJobRequest, GetJobResponse } from '@gestell/job/get'
+import { getJobs, GetJobsRequest, GetJobsResponse } from '@gestell/job/list'
 import {
   reprocessDocument,
   ReprocessDocumentsRequest,
   ReprocessDocumentsResponse
-} from 'job/reprocess'
+} from '@gestell/job/reprocess'
 import {
   createOrganization,
   CreateOrganizationRequest,
   CreateOrganizationResponse
-} from 'organization/create'
+} from '@gestell/organization/create'
 import {
   deleteOrganization,
   DeleteOrganizationResponse
-} from 'organization/delete'
-import { getOrganization, GetOrganizationResponse } from 'organization/get'
+} from '@gestell/organization/delete'
+import {
+  getOrganization,
+  GetOrganizationResponse
+} from '@gestell/organization/get'
 import {
   getOrganizations,
   GetOrganizationsRequest,
   GetOrganizationsResponse
-} from 'organization/list'
+} from '@gestell/organization/list'
 import {
   addMembers,
   AddMembersRequest,
   AddMembersResponse
-} from 'organization/members/add'
+} from '@gestell/organization/members/add'
 import {
   removeMembers,
   RemoveMembersRequest,
   RemoveMembersResponse
-} from 'organization/members/remove'
+} from '@gestell/organization/members/remove'
 import {
   updateOrganization,
   UpdateOrganizationRequest,
   UpdateOrganizationResponse
-} from 'organization/update'
+} from '@gestell/organization/update'
 import {
   featuresQuery,
   FeaturesQueryRequest,
   FeaturesQueryResponse
-} from 'query/features'
-import { promptQuery } from 'query/prompt'
-import { searchQuery, SearchQueryResponse } from 'query/search'
+} from '@gestell/query/features'
+import { promptQuery } from '@gestell/query/prompt'
+import { searchQuery, SearchQueryResponse } from '@gestell/query/search'
 import {
   tablesQuery,
   TablesQueryRequest,
   TablesQueryResponse
-} from 'query/table'
-import { PromptPayload, QueryPayload } from 'types/query'
+} from '@gestell/query/table'
+import { PromptPayload, QueryPayload } from '@gestell/types/query'
 
 export interface GestellInit {
   key?: string
@@ -752,7 +762,7 @@ export class Gestell {
    */
   constructor(payload?: GestellInit) {
     if (typeof window === 'undefined') {
-      require('dotenv')
+      require('dotenv').config()
     }
     this.apiUrl =
       payload?.url ||

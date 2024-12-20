@@ -1,5 +1,5 @@
-import type { BaseRequest, BaseResponse } from 'types/base';
-import { Collection } from 'types/collection';
+import type { BaseRequest, BaseResponse } from '@gestell/types/base';
+import { Collection } from '@gestell/types/collection';
 export interface GetCollectionsRequest {
     search?: string;
     take?: number;

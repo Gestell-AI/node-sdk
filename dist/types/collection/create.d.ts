@@ -1,6 +1,6 @@
-import type { BaseRequest, BaseResponse } from 'types/base';
-import { CreateCategoryPayload } from 'types/category';
-import { CollectionType } from 'types/collection';
+import type { BaseRequest, BaseResponse } from '@gestell/types/base';
+import { CreateCategoryPayload } from '@gestell/types/category';
+import { CollectionType } from '@gestell/types/collection';
 export interface CreateCollectionRequest {
     organizationId: string;
     name: string;

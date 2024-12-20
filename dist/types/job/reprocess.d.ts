@@ -1,5 +1,5 @@
-import type { BaseRequest, BaseResponse } from 'types/base';
-import { JobType } from 'types/job';
+import type { BaseRequest, BaseResponse } from '@gestell/types/base';
+import { JobType } from '@gestell/types/job';
 export interface ReprocessDocumentsRequest {
     collectionId: string;
     ids: string[];

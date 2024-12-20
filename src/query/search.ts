@@ -1,6 +1,6 @@
-import type { BaseRequest, BaseResponse } from 'types/base'
-import { QueryKV, QueryPayload, SearchResult } from 'types/query'
-import loadFetch from 'util/fetch'
+import type { BaseRequest, BaseResponse } from '@gestell/types/base'
+import { QueryKV, QueryPayload, SearchResult } from '@gestell/types/query'
+import loadFetch from '@gestell/util/fetch'
 
 export interface SearchQueryResponse extends BaseResponse {
   result: SearchResult[]

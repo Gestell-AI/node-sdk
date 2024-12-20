@@ -1,4 +1,4 @@
-import type { BaseRequest, BaseResponse } from 'types/base';
+import type { BaseRequest, BaseResponse } from '@gestell/types/base';
 export interface PresignDocumentRequest {
     collectionId: string;
     filename: string;

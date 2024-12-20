@@ -1,5 +1,5 @@
-import type { BaseRequest, BaseResponse } from 'types/base';
-import { FeatureLayout } from 'types/layout';
+import type { BaseRequest, BaseResponse } from '@gestell/types/base';
+import { FeatureLayout } from '@gestell/types/layout';
 export interface FeaturesQueryRequest {
     collectionId: string;
     categoryId: string;

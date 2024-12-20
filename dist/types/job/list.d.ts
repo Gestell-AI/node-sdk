@@ -1,5 +1,5 @@
-import type { BaseRequest, BaseResponse } from 'types/base';
-import { Job, JobStatusType } from 'types/job';
+import type { BaseRequest, BaseResponse } from '@gestell/types/base';
+import { Job, JobStatusType } from '@gestell/types/job';
 export interface GetJobsRequest {
     collectionId: string;
     take?: number;

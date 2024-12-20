@@ -1,6 +1,6 @@
-import type { BaseRequest, BaseResponse } from 'types/base'
-import { Document } from 'types/document'
-import loadFetch from 'util/fetch'
+import type { BaseRequest, BaseResponse } from '@gestell/types/base'
+import { Document } from '@gestell/types/document'
+import loadFetch from '@gestell/util/fetch'
 
 export interface GetDocumentRequest {
   collectionId: string
