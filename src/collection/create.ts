@@ -1,7 +1,7 @@
-import type { BaseRequest, BaseResponse } from 'types/base'
-import { CreateCategoryPayload } from 'types/category'
-import { CollectionType } from 'types/collection'
-import loadFetch from 'util/fetch'
+import type { BaseRequest, BaseResponse } from '@gestell/types/base'
+import { CreateCategoryPayload } from '@gestell/types/category'
+import { CollectionType } from '@gestell/types/collection'
+import loadFetch from '@gestell/util/fetch'
 
 export interface CreateCollectionRequest {
   organizationId: string

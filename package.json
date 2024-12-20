@@ -1,22 +1,23 @@
 {
   "name": "@gestell/sdk",
-  "version": "1.1.5",
+  "version": "1.1.15",
   "description": "The Official Gestell Node.js SDK",
   "private": false,
   "repository": "https://github.com/Gestell-AI/node-sdk.git",
   "author": "Chris Cates <hello@chriscates.ca>",
   "license": "MIT",
+  "main": "./dist/esm/index.js",
+  "types": "./dist/types/index.d.ts",
   "exports": {
-    "./*": {
-      "types": "./build/types/index.d.ts",
-      "require": "./build/cjs/index.js",
-      "import": "./build/esm/index.js",
-      "default": "./build/esm/index.js"
-    },
-    "./package.json": "./package.json"
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "require": "./dist/cjs/index.js",
+      "import": "./dist/esm/index.js",
+      "default": "./dist/esm/index.js"
+    }
   },
   "scripts": {
-    "build": "tsc -b ./tsconfig.esm.json ./tsconfig.types.json",
+    "build": "tsc -b ./dist/tsconfig.esm.json ./dist/tsconfig.cjs.json ./dist/tsconfig.types.json && tsc-alias -p ./dist/tsconfig.esm.json && tsc-alias -p ./dist/tsconfig.cjs.json",
     "test": "bun test --timeout 120000 --bail --coverage --coverage-reporter lcov",
     "test:submit": "cat ./coverage/lcov.info | coveralls",
     "lint": "eslint ."
@@ -36,6 +37,7 @@
     "eslint-config-prettier": "9.1.0",
     "eslint-plugin-prettier": "5.2.1",
     "eslint-plugin-simple-import-sort": "12.1.1",
+    "tsc-alias": "1.8.10",
     "typescript": "5.7.2",
     "typescript-eslint": "8.18.0"
   }

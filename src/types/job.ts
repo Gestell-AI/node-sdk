@@ -1,4 +1,4 @@
-import { Collection } from './collection'
+import { Collection } from '@gestell/types/collection'
 
 export type JobType = 'status' | 'nodes' | 'vectors' | 'edges' | 'category'
 

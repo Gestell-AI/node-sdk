@@ -1,6 +1,6 @@
-import type { BaseRequest, BaseResponse } from 'types/base'
-import { CategoryType } from 'types/category'
-import loadFetch from 'util/fetch'
+import type { BaseRequest, BaseResponse } from '@gestell/types/base'
+import { CategoryType } from '@gestell/types/category'
+import loadFetch from '@gestell/util/fetch'
 
 export interface AddCategoryRequest {
   collectionId: string

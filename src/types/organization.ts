@@ -1,4 +1,4 @@
-import { Collection } from 'types/collection'
+import { Collection } from '@gestell/types/collection'
 
 export type MembershipType = 'member' | 'admin'
 

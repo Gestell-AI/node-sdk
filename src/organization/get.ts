@@ -1,6 +1,6 @@
-import type { BaseRequest, BaseResponse } from 'types/base'
-import { Organization } from 'types/organization'
-import loadFetch from 'util/fetch'
+import type { BaseRequest, BaseResponse } from '@gestell/types/base'
+import { Organization } from '@gestell/types/organization'
+import loadFetch from '@gestell/util/fetch'
 
 export interface GetOrganizationRequest {
   id: string

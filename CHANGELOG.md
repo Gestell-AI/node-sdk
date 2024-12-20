@@ -9,3 +9,7 @@
 - Added `document.upload()`, convenient function that supports both client and server side uplaods
 
 - Some Intellisense Improvements
+
+## 1.1.15
+
+- ESM and CJS Export Fixes were implemented
