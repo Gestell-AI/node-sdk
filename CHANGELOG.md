@@ -19,3 +19,7 @@
 - Fix ESM and CJS conditional env loader
 
 - Fix build artifacts (lots of debugging between link vs publish, lol)
+
+## 1.1.21
+
+- Fix buffer encoding and client side compatibility for `document.upload()`

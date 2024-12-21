@@ -1,3 +1,4 @@
+export type LayoutType = 'document' | 'photo' | 'audio' | 'video';
 export type LayoutPosition = [number, number, number, number];
 export interface DocumentLayoutOutput {
     position: LayoutPosition;
@@ -30,7 +31,6 @@ export interface VideoLayout {
     narrator: string;
     objects: PhotoLayout[];
 }
-export type LayoutType = 'document' | 'photo' | 'audio' | 'video';
 export interface FeatureLayout {
     position: number[];
     label: string;
