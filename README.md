@@ -1,7 +1,7 @@
 # Gestell Node SDK
 
 ![license](https://img.shields.io/badge/license-MIT-blue)
-![version](https://img.shields.io/badge/version-1.1.20-blue)
+![version](https://img.shields.io/badge/version-1.1.21-blue)
 [![Coverage Status](https://coveralls.io/repos/github/Gestell-AI/node-sdk/badge.svg?branch=master)](https://coveralls.io/github/Gestell-AI/node-sdk?branch=master)
 [![CircleCI](https://dl.circleci.com/status-badge/img/circleci/7sUmZuDYQ6cd8WbCiCCnfR/VPonbpR7NEQSaXxQngcCGW/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/circleci/7sUmZuDYQ6cd8WbCiCCnfR/VPonbpR7NEQSaXxQngcCGW/tree/master)
 
@@ -61,17 +61,9 @@ start()
 bun run start.ts
 ```
 
-## Guides
+## Guide
 
-You can review guides on common workflows and use cases for the Gestell Platform by going to <https://gestell.ai/docs>. Here are the most common use cases:
-
-1. [Create a collection and upload documents to it](https://gestell.ai/docs/quick-start)
-
-2. [Prompt a collection](https://gestell.ai/docs/prompt)
-
-3. [Gather all labels from a collection](https://gestell.ai/docs/labels)
-
-4. [Gather all tables from a collection](https://gestell.ai/docs/tables)
+You can review guides on common workflows and use cases for the Gestell Platform by going to <https://gestell.ai/docs>. There is a full guide to create, prompt, search and gather labels and tables at <https://gestell.ai/docs/guide>.
 
 ## Contributing
 
