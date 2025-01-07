@@ -8,6 +8,7 @@ import { UpdateCollectionRequest, UpdateCollectionResponse } from './collection/
 import { UpdateCategoryRequest, UpdateCategoryResponse } from './collection/updateCategory';
 import { CreateDocumentRequest, CreateDocumentResponse } from './document/create';
 import { DeleteDocumentRequest, DeleteDocumentResponse } from './document/delete';
+import { ExportDocumentRequest, ExportDocumentResponse } from './document/export';
 import { GetDocumentRequest, GetDocumentResponse } from './document/get';
 import { GetDocumentsRequest, GetDocumentsResponse } from './document/list';
 import { PresignDocumentRequest, PresignDocumentResponse } from './document/presign';
@@ -17,13 +18,13 @@ import { CancelJobsRequest, CancelJobsResponse } from './job/cancel';
 import { GetJobRequest, GetJobResponse } from './job/get';
 import { GetJobsRequest, GetJobsResponse } from './job/list';
 import { ReprocessDocumentsRequest, ReprocessDocumentsResponse } from './job/reprocess';
-import { CreateOrganizationRequest, CreateOrganizationResponse } from './organization/create';
-import { DeleteOrganizationResponse } from './organization/delete';
 import { GetOrganizationResponse } from './organization/get';
 import { GetOrganizationsRequest, GetOrganizationsResponse } from './organization/list';
 import { AddMembersRequest, AddMembersResponse } from './organization/members/add';
 import { RemoveMembersRequest, RemoveMembersResponse } from './organization/members/remove';
 import { UpdateOrganizationRequest, UpdateOrganizationResponse } from './organization/update';
+import { ExportFeaturesRequest, ExportFeaturesResponse } from './query/exportFeatures';
+import { ExportTableRequest, ExportTableResponse } from './query/exportTable';
 import { FeaturesQueryRequest, FeaturesQueryResponse } from './query/features';
 import { SearchQueryResponse } from './query/search';
 import { TablesQueryRequest, TablesQueryResponse } from './query/table';
@@ -80,20 +81,6 @@ export declare class Gestell {
          */
         list: (payload?: GetOrganizationsRequest) => Promise<GetOrganizationsResponse>;
         /**
-         * Allows the creation of a new organization by passing the necessary details in the payload.
-         * Learn more about usage at: https://gestell.ai/docs/reference#organization
-         *
-         * @param payload - The details of the new organization to create, including:
-         * - `name`: The name of the organization.
-         * - `description`: A brief description of the organization.
-         * - `members`: An optional array of members to add to the organization during creation.
-         * @returns A promise that resolves to the response of the organization creation request, including:
-         * - `id`: The unique identifier of the newly created organization.
-         * - `status`: The status of the creation request.
-         * - `message`: An optional message providing additional details about the request result.
-         */
-        create: (payload: CreateOrganizationRequest) => Promise<CreateOrganizationResponse>;
-        /**
          * Allows updating the details of an existing organization. Requires the organization ID and the updated information in the payload.
          * Learn more about usage at: https://gestell.ai/docs/reference#organization
          *
@@ -106,17 +93,6 @@ export declare class Gestell {
          * - `message`: An optional message providing additional details about the request result.
          */
         update: (payload: UpdateOrganizationRequest) => Promise<UpdateOrganizationResponse>;
-        /**
-         * Allows the deletion of an organization by its unique ID. Once deleted, the organization and associated data are removed from the system.
-         * THIS IS NOT REVERSIBLE.
-         * Learn more about usage at: https://gestell.ai/docs/reference#organization
-         *
-         * @param organizationId - The ID of the organization to delete.
-         * @returns A promise that resolves to the response of the update request, including:
-         * - `status`: The status of the delete request.
-         * - `message`: An optional message providing additional details about the request result.
-         */
-        delete: (organizationId: string) => Promise<DeleteOrganizationResponse>;
         /**
          * Adds new members to the organization based on the provided payload.
          * Learn more about usage at: https://gestell.ai/docs/reference#organization
@@ -385,6 +361,16 @@ export declare class Gestell {
          */
         features: (payload: FeaturesQueryRequest) => Promise<FeaturesQueryResponse>;
         /**
+         * Exports the feature-related information from a specific collection.
+         * Learn more about usage at: https://gestell.ai/docs/reference#query
+         *
+         * @param collectionId - The ID of the collection to query.
+         * @param categoryId - The category id of the feature
+         * @param type - "json" or "csv"
+         * @returns A promise that resolves to a dynamic feature array that depends on your category instructions.
+         */
+        featuresExport: (payload: ExportFeaturesRequest) => Promise<ExportFeaturesResponse | string>;
+        /**
          * Retrieves table-related information from a specific collection.
          * Learn more about usage at: https://gestell.ai/docs/reference#query
          *
@@ -396,6 +382,16 @@ export declare class Gestell {
          * @returns A promise that resolves to a dynamic table array that depends on your category instructions.
          */
         table: (payload: TablesQueryRequest) => Promise<TablesQueryResponse>;
+        /**
+         * Exports the table information from a specific collection.
+         * Learn more about usage at: https://gestell.ai/docs/reference#query
+         *
+         * @param collectionId - The ID of the collection to query.
+         * @param categoryId - The category id of the table
+         * @param type - "json" or "csv"
+         * @returns A promise that resolves to a dynamic table array that depends on your category instructions.
+         */
+        tableExport: (payload: ExportTableRequest) => Promise<ExportTableResponse | string>;
     };
     /**
      * Manage documents within a collection. You will need to retrieve the collection id to manage documents.
@@ -429,6 +425,16 @@ export declare class Gestell {
          *   - `dateUpdated`: The date the document was last updated.
          */
         get: (payload: GetDocumentRequest) => Promise<GetDocumentResponse>;
+        /**
+         * Fetches a specific document from a collection using its unique document ID.
+         * Learn more about usage at: https://gestell.ai/docs/reference#document
+         *
+         * @param collectionId - The ID of the collection containing the document.
+         * @param documentId - The ID of the document to retrieve.
+         * @param type - "json" for layout or "text" for raw text output
+         * @returns A promise that resolves to the document layout or text
+         */
+        export: (payload: ExportDocumentRequest) => Promise<ExportDocumentResponse>;
         /**
          * Fetches a list of documents from a collection, with optional filtering and pagination.
          * Learn more about usage at: https://gestell.ai/docs/reference#document
@@ -612,9 +618,7 @@ export declare class Gestell {
     constructor(payload?: GestellInit);
     private getOrganization;
     private getOrganizations;
-    private createOrganization;
     private updateOrganization;
-    private deleteOrganization;
     private addMembers;
     private removeMembers;
     private getCollection;
@@ -628,8 +632,11 @@ export declare class Gestell {
     private searchQuery;
     private promptQuery;
     private featuresQuery;
+    private featuresExport;
     private tablesQuery;
+    private tableExport;
     private getDocument;
+    private exportDocument;
     private getDocuments;
     private uploadDocument;
     private presignDocument;

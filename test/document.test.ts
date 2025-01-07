@@ -4,22 +4,17 @@ import { join } from 'path'
 import Gestell from '@gestell/index'
 
 const gestell = new Gestell()
+const organizationId = process.env.ORGANIZATION_ID || ''
+
+if (!organizationId) {
+  console.error('Please create an organization first')
+  process.exit()
+}
 
 describe('Document', () => {
-  let organizationId = ''
   let collectionId = ''
   let documentId = ''
   let jobId = ''
-
-  test('Create Test Organization', async () => {
-    const response = await gestell.organization.create({
-      name: 'Automated Test Organization',
-      description: 'This is an automated test organization'
-    })
-    expect(response.status).toEqual('OK')
-    expect(response.id.length).toBeGreaterThan(1)
-    organizationId = response.id
-  })
 
   test('Create Test Collection', async () => {
     const response = await gestell.collection.create({
@@ -74,6 +69,11 @@ describe('Document', () => {
 
     expect(response.status).toEqual('OK')
 
+    await gestell.document.delete({
+      collectionId,
+      documentId: response.id
+    })
+
     const response2 = await gestell.document.upload({
       collectionId,
       name: 'sample-2.jpg',
@@ -82,6 +82,11 @@ describe('Document', () => {
     })
 
     expect(response2.status).toEqual('OK')
+
+    await gestell.document.delete({
+      collectionId,
+      documentId: response2.id
+    })
   })
 
   test('Update', async () => {
@@ -125,11 +130,6 @@ describe('Document', () => {
 
   test('Delete Test Collection', async () => {
     const response = await gestell.collection.delete(collectionId)
-    expect(response.status).toEqual('OK')
-  })
-
-  test('Delete Test Organization', async () => {
-    const response = await gestell.organization.delete(organizationId)
     expect(response.status).toEqual('OK')
   })
 })

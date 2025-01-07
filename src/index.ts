@@ -44,6 +44,11 @@ import {
   DeleteDocumentResponse
 } from '@gestell/document/delete'
 import {
+  exportDocument,
+  ExportDocumentRequest,
+  ExportDocumentResponse
+} from '@gestell/document/export'
+import {
   getDocument,
   GetDocumentRequest,
   GetDocumentResponse
@@ -81,15 +86,6 @@ import {
   ReprocessDocumentsResponse
 } from '@gestell/job/reprocess'
 import {
-  createOrganization,
-  CreateOrganizationRequest,
-  CreateOrganizationResponse
-} from '@gestell/organization/create'
-import {
-  deleteOrganization,
-  DeleteOrganizationResponse
-} from '@gestell/organization/delete'
-import {
   getOrganization,
   GetOrganizationResponse
 } from '@gestell/organization/get'
@@ -113,6 +109,16 @@ import {
   UpdateOrganizationRequest,
   UpdateOrganizationResponse
 } from '@gestell/organization/update'
+import {
+  exportFeatures,
+  ExportFeaturesRequest,
+  ExportFeaturesResponse
+} from '@gestell/query/exportFeatures'
+import {
+  exportTable,
+  ExportTableRequest,
+  ExportTableResponse
+} from '@gestell/query/exportTable'
 import {
   featuresQuery,
   FeaturesQueryRequest,
@@ -185,23 +191,6 @@ export class Gestell {
     ) => Promise<GetOrganizationsResponse>
 
     /**
-     * Allows the creation of a new organization by passing the necessary details in the payload.
-     * Learn more about usage at: https://gestell.ai/docs/reference#organization
-     *
-     * @param payload - The details of the new organization to create, including:
-     * - `name`: The name of the organization.
-     * - `description`: A brief description of the organization.
-     * - `members`: An optional array of members to add to the organization during creation.
-     * @returns A promise that resolves to the response of the organization creation request, including:
-     * - `id`: The unique identifier of the newly created organization.
-     * - `status`: The status of the creation request.
-     * - `message`: An optional message providing additional details about the request result.
-     */
-    create: (
-      payload: CreateOrganizationRequest
-    ) => Promise<CreateOrganizationResponse>
-
-    /**
      * Allows updating the details of an existing organization. Requires the organization ID and the updated information in the payload.
      * Learn more about usage at: https://gestell.ai/docs/reference#organization
      *
@@ -216,18 +205,6 @@ export class Gestell {
     update: (
       payload: UpdateOrganizationRequest
     ) => Promise<UpdateOrganizationResponse>
-
-    /**
-     * Allows the deletion of an organization by its unique ID. Once deleted, the organization and associated data are removed from the system.
-     * THIS IS NOT REVERSIBLE.
-     * Learn more about usage at: https://gestell.ai/docs/reference#organization
-     *
-     * @param organizationId - The ID of the organization to delete.
-     * @returns A promise that resolves to the response of the update request, including:
-     * - `status`: The status of the delete request.
-     * - `message`: An optional message providing additional details about the request result.
-     */
-    delete: (organizationId: string) => Promise<DeleteOrganizationResponse>
 
     /**
      * Adds new members to the organization based on the provided payload.
@@ -520,6 +497,19 @@ export class Gestell {
     features: (payload: FeaturesQueryRequest) => Promise<FeaturesQueryResponse>
 
     /**
+     * Exports the feature-related information from a specific collection.
+     * Learn more about usage at: https://gestell.ai/docs/reference#query
+     *
+     * @param collectionId - The ID of the collection to query.
+     * @param categoryId - The category id of the feature
+     * @param type - "json" or "csv"
+     * @returns A promise that resolves to a dynamic feature array that depends on your category instructions.
+     */
+    featuresExport: (
+      payload: ExportFeaturesRequest
+    ) => Promise<ExportFeaturesResponse | string>
+
+    /**
      * Retrieves table-related information from a specific collection.
      * Learn more about usage at: https://gestell.ai/docs/reference#query
      *
@@ -531,6 +521,19 @@ export class Gestell {
      * @returns A promise that resolves to a dynamic table array that depends on your category instructions.
      */
     table: (payload: TablesQueryRequest) => Promise<TablesQueryResponse>
+
+    /**
+     * Exports the table information from a specific collection.
+     * Learn more about usage at: https://gestell.ai/docs/reference#query
+     *
+     * @param collectionId - The ID of the collection to query.
+     * @param categoryId - The category id of the table
+     * @param type - "json" or "csv"
+     * @returns A promise that resolves to a dynamic table array that depends on your category instructions.
+     */
+    tableExport: (
+      payload: ExportTableRequest
+    ) => Promise<ExportTableResponse | string>
   }
 
   /**
@@ -565,6 +568,17 @@ export class Gestell {
      *   - `dateUpdated`: The date the document was last updated.
      */
     get: (payload: GetDocumentRequest) => Promise<GetDocumentResponse>
+
+    /**
+     * Fetches a specific document from a collection using its unique document ID.
+     * Learn more about usage at: https://gestell.ai/docs/reference#document
+     *
+     * @param collectionId - The ID of the collection containing the document.
+     * @param documentId - The ID of the document to retrieve.
+     * @param type - "json" for layout or "text" for raw text output
+     * @returns A promise that resolves to the document layout or text
+     */
+    export: (payload: ExportDocumentRequest) => Promise<ExportDocumentResponse>
 
     /**
      * Fetches a list of documents from a collection, with optional filtering and pagination.
@@ -774,9 +788,7 @@ export class Gestell {
     this.organization = {
       get: this.getOrganization.bind(this),
       list: this.getOrganizations.bind(this),
-      create: this.createOrganization.bind(this),
       update: this.updateOrganization.bind(this),
-      delete: this.deleteOrganization.bind(this),
       addMembers: this.addMembers.bind(this),
       removeMembers: this.removeMembers.bind(this)
     }
@@ -796,11 +808,14 @@ export class Gestell {
       search: this.searchQuery.bind(this),
       prompt: this.promptQuery.bind(this),
       features: this.featuresQuery.bind(this),
-      table: this.tablesQuery.bind(this)
+      featuresExport: this.featuresExport.bind(this),
+      table: this.tablesQuery.bind(this),
+      tableExport: this.tableExport.bind(this)
     }
 
     this.document = {
       get: this.getDocument.bind(this),
+      export: this.exportDocument.bind(this),
       list: this.getDocuments.bind(this),
       upload: this.uploadDocument.bind(this),
       presign: this.presignDocument.bind(this),
@@ -837,33 +852,11 @@ export class Gestell {
     })
   }
 
-  private async createOrganization(
-    payload: CreateOrganizationRequest
-  ): Promise<CreateOrganizationResponse> {
-    return await createOrganization({
-      ...payload,
-      apiKey: this.apiKey,
-      apiUrl: this.apiUrl,
-      debug: this.debug
-    })
-  }
-
   private async updateOrganization(
     payload: UpdateOrganizationRequest
   ): Promise<UpdateOrganizationResponse> {
     return await updateOrganization({
       ...payload,
-      apiKey: this.apiKey,
-      apiUrl: this.apiUrl,
-      debug: this.debug
-    })
-  }
-
-  private async deleteOrganization(
-    id: string
-  ): Promise<DeleteOrganizationResponse> {
-    return await deleteOrganization({
-      id,
       apiKey: this.apiKey,
       apiUrl: this.apiUrl,
       debug: this.debug
@@ -1013,6 +1006,17 @@ export class Gestell {
     })
   }
 
+  private async featuresExport(
+    payload: ExportFeaturesRequest
+  ): Promise<ExportFeaturesResponse | string> {
+    return await exportFeatures({
+      ...payload,
+      apiKey: this.apiKey,
+      apiUrl: this.apiUrl,
+      debug: this.debug
+    })
+  }
+
   private async tablesQuery(
     payload: TablesQueryRequest
   ): Promise<TablesQueryResponse> {
@@ -1024,10 +1028,32 @@ export class Gestell {
     })
   }
 
+  private async tableExport(
+    payload: ExportTableRequest
+  ): Promise<ExportTableResponse | string> {
+    return await exportTable({
+      ...payload,
+      apiKey: this.apiKey,
+      apiUrl: this.apiUrl,
+      debug: this.debug
+    })
+  }
+
   private async getDocument(
     payload: GetDocumentRequest
   ): Promise<GetDocumentResponse> {
     return await getDocument({
+      ...payload,
+      apiKey: this.apiKey,
+      apiUrl: this.apiUrl,
+      debug: this.debug
+    })
+  }
+
+  private async exportDocument(
+    payload: ExportDocumentRequest
+  ): Promise<ExportDocumentResponse> {
+    return await exportDocument({
       ...payload,
       apiKey: this.apiKey,
       apiUrl: this.apiUrl,
