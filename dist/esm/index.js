@@ -11,6 +11,7 @@ const update_1 = require("./collection/update");
 const updateCategory_1 = require("./collection/updateCategory");
 const create_2 = require("./document/create");
 const delete_2 = require("./document/delete");
+const export_1 = require("./document/export");
 const get_2 = require("./document/get");
 const list_2 = require("./document/list");
 const presign_1 = require("./document/presign");
@@ -20,13 +21,13 @@ const cancel_1 = require("./job/cancel");
 const get_3 = require("./job/get");
 const list_3 = require("./job/list");
 const reprocess_1 = require("./job/reprocess");
-const create_3 = require("./organization/create");
-const delete_3 = require("./organization/delete");
 const get_4 = require("./organization/get");
 const list_4 = require("./organization/list");
 const add_1 = require("./organization/members/add");
 const remove_1 = require("./organization/members/remove");
 const update_3 = require("./organization/update");
+const exportFeatures_1 = require("./query/exportFeatures");
+const exportTable_1 = require("./query/exportTable");
 const features_1 = require("./query/features");
 const prompt_1 = require("./query/prompt");
 const search_1 = require("./query/search");
@@ -93,9 +94,7 @@ class Gestell {
         this.organization = {
             get: this.getOrganization.bind(this),
             list: this.getOrganizations.bind(this),
-            create: this.createOrganization.bind(this),
             update: this.updateOrganization.bind(this),
-            delete: this.deleteOrganization.bind(this),
             addMembers: this.addMembers.bind(this),
             removeMembers: this.removeMembers.bind(this)
         };
@@ -113,10 +112,13 @@ class Gestell {
             search: this.searchQuery.bind(this),
             prompt: this.promptQuery.bind(this),
             features: this.featuresQuery.bind(this),
-            table: this.tablesQuery.bind(this)
+            featuresExport: this.featuresExport.bind(this),
+            table: this.tablesQuery.bind(this),
+            tableExport: this.tableExport.bind(this)
         };
         this.document = {
             get: this.getDocument.bind(this),
+            export: this.exportDocument.bind(this),
             list: this.getDocuments.bind(this),
             upload: this.uploadDocument.bind(this),
             presign: this.presignDocument.bind(this),
@@ -147,25 +149,9 @@ class Gestell {
             debug: this.debug
         });
     }
-    async createOrganization(payload) {
-        return await (0, create_3.createOrganization)({
-            ...payload,
-            apiKey: this.apiKey,
-            apiUrl: this.apiUrl,
-            debug: this.debug
-        });
-    }
     async updateOrganization(payload) {
         return await (0, update_3.updateOrganization)({
             ...payload,
-            apiKey: this.apiKey,
-            apiUrl: this.apiUrl,
-            debug: this.debug
-        });
-    }
-    async deleteOrganization(id) {
-        return await (0, delete_3.deleteOrganization)({
-            id,
             apiKey: this.apiKey,
             apiUrl: this.apiUrl,
             debug: this.debug
@@ -275,6 +261,14 @@ class Gestell {
             debug: this.debug
         });
     }
+    async featuresExport(payload) {
+        return await (0, exportFeatures_1.exportFeatures)({
+            ...payload,
+            apiKey: this.apiKey,
+            apiUrl: this.apiUrl,
+            debug: this.debug
+        });
+    }
     async tablesQuery(payload) {
         return await (0, table_1.tablesQuery)({
             ...payload,
@@ -283,8 +277,24 @@ class Gestell {
             debug: this.debug
         });
     }
+    async tableExport(payload) {
+        return await (0, exportTable_1.exportTable)({
+            ...payload,
+            apiKey: this.apiKey,
+            apiUrl: this.apiUrl,
+            debug: this.debug
+        });
+    }
     async getDocument(payload) {
         return await (0, get_2.getDocument)({
+            ...payload,
+            apiKey: this.apiKey,
+            apiUrl: this.apiUrl,
+            debug: this.debug
+        });
+    }
+    async exportDocument(payload) {
+        return await (0, export_1.exportDocument)({
             ...payload,
             apiKey: this.apiKey,
             apiUrl: this.apiUrl,

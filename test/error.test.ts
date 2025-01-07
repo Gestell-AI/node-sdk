@@ -26,14 +26,6 @@ describe('Error', () => {
     expect(response.status).toBe('ERROR')
   })
 
-  test('organization.create', async () => {
-    const response = await gestell.organization.create({
-      name: '...',
-      description: '...'
-    })
-    expect(response.status).toBe('ERROR')
-  })
-
   test('organization.addMembers', async () => {
     const response = await gestell.organization.addMembers({
       organizationId: '...',
@@ -47,11 +39,6 @@ describe('Error', () => {
       organizationId: '...',
       members: []
     })
-    expect(response.status).toBe('ERROR')
-  })
-
-  test('organization.delete', async () => {
-    const response = await gestell.organization.delete('...')
     expect(response.status).toBe('ERROR')
   })
 
@@ -150,12 +137,26 @@ describe('Error', () => {
     expect(response.status).toBe('ERROR')
   })
 
+  test('collection.query.tableExport', async () => {
+    await gestell.query.tableExport({
+      collectionId: '...',
+      categoryId: '...'
+    })
+  })
+
   test('collection.query.features', async () => {
     const response = await gestell.query.features({
       collectionId: '...',
       categoryId: '...'
     })
     expect(response.status).toBe('ERROR')
+  })
+
+  test('collection.query.featuresExport', async () => {
+    await gestell.query.featuresExport({
+      collectionId: '...',
+      categoryId: '...'
+    })
   })
 
   test('collection.job.get', async () => {

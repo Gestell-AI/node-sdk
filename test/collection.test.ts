@@ -2,21 +2,16 @@ import { describe, expect, test } from 'bun:test'
 import Gestell from '@gestell/index'
 
 const gestell = new Gestell()
+const organizationId = process.env.ORGANIZATION_ID || ''
+
+if (!organizationId) {
+  console.error('Please create an organization first')
+  process.exit()
+}
 
 describe('Collection', () => {
-  let organizationId = ''
   let collectionId = ''
   let categoryId = ''
-
-  test('Create Test Organization', async () => {
-    const response = await gestell.organization.create({
-      name: 'Automated Test Organization',
-      description: 'This is an automated test organization'
-    })
-    expect(response.status).toEqual('OK')
-    expect(response.id.length).toBeGreaterThan(1)
-    organizationId = response.id
-  })
 
   test('Create', async () => {
     const response = await gestell.collection.create({
@@ -98,11 +93,6 @@ describe('Collection', () => {
 
   test('Delete', async () => {
     const response = await gestell.collection.delete(collectionId)
-    expect(response.status).toEqual('OK')
-  })
-
-  test('Delete Test Organization', async () => {
-    const response = await gestell.organization.delete(organizationId)
     expect(response.status).toEqual('OK')
   })
 })
