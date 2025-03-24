@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.2.3
+
+- Added the tables flag for document upload and creation
+
 ## 1.2.1
 
 - Removed Create and Delete Organization (can only be done in app)

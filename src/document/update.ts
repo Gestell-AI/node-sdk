@@ -7,6 +7,7 @@ export interface UpdateDocumentRequest {
   name?: string
   instructions?: string
   job?: boolean
+  tables?: boolean
 }
 
 export type UpdateDocumentResponse = BaseResponse
@@ -19,7 +20,8 @@ export async function updateDocument({
   documentId,
   name,
   instructions,
-  job
+  job,
+  tables
 }: UpdateDocumentRequest & BaseRequest): Promise<UpdateDocumentResponse> {
   const fetch = await loadFetch()
   const url = new URL(
@@ -35,7 +37,8 @@ export async function updateDocument({
     body: JSON.stringify({
       name,
       instructions,
-      job
+      job,
+      tables
     })
   })
 

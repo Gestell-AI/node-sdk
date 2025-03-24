@@ -8,6 +8,7 @@ export interface CreateDocumentRequest {
   type: string
   instructions?: string
   job?: boolean
+  tables?: boolean
 }
 
 export interface CreateDocumentResponse extends BaseResponse {
@@ -23,7 +24,8 @@ export async function createDocument({
   path,
   type,
   instructions = '',
-  job = true
+  job = true,
+  tables = false
 }: CreateDocumentRequest & BaseRequest): Promise<CreateDocumentResponse> {
   const fetch = await loadFetch()
   const url = new URL(`/api/collection/${collectionId}/document`, apiUrl)
@@ -38,7 +40,8 @@ export async function createDocument({
       path,
       type,
       instructions,
-      job
+      job,
+      tables
     })
   })
 

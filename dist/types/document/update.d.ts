@@ -5,6 +5,7 @@ export interface UpdateDocumentRequest {
     name?: string;
     instructions?: string;
     job?: boolean;
+    tables?: boolean;
 }
 export type UpdateDocumentResponse = BaseResponse;
-export declare function updateDocument({ apiKey, apiUrl, debug, collectionId, documentId, name, instructions, job }: UpdateDocumentRequest & BaseRequest): Promise<UpdateDocumentResponse>;
+export declare function updateDocument({ apiKey, apiUrl, debug, collectionId, documentId, name, instructions, job, tables }: UpdateDocumentRequest & BaseRequest): Promise<UpdateDocumentResponse>;

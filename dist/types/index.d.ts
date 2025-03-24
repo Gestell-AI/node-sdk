@@ -494,6 +494,7 @@ export declare class Gestell {
          *   - `type`: The MIME type of the document (e.g., 'application/pdf').
          *   - `instructions` (optional): Additional instructions related to the document.
          *   - `job` (optional): Set to false to not dispatch a job
+         *   - `tables` (optional): A boolean that flags for additional table processing and analysis is performed on the document, use this for pdfs with complex tables
          * @returns A promise that resolves to the response of the document creation request, including:
          *   - `status`: The status of the document creation request.
          *   - `message`: An optional message providing additional details about the request result.
@@ -511,6 +512,7 @@ export declare class Gestell {
          * - `file`: The file to upload, which can be a string, Buffer, or File.
          * - `instructions` (optional): Additional instructions related to the document.
          * - `job` (optional): Set to `false` to skip dispatching a job for processing the document.
+         * - `tables`: A boolean that flags for additional table processing and analysis is performed on the document, use this for pdfs with complex tables
          *
          * @returns A promise that resolves to the response of the document upload request, including:
          * - `status`: The status of the request (`OK` or `ERROR`).
@@ -528,6 +530,7 @@ export declare class Gestell {
          *   - `name` (optional): The updated name of the document.
          *   - `instructions` (optional): Updated instructions related to the document.
          *   - `job` (optional): Set to true to dispatch a reprocessing job
+         *   - `tables`: A boolean that flags for additional table processing and analysis is performed on the document, use this for pdfs with complex tables
          * @returns A promise that resolves to the response of the update request, including:
          *   - `status`: The status of the update request.
          *   - `message`: An optional message providing additional details about the update result.

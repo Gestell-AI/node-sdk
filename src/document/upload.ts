@@ -10,6 +10,7 @@ export interface UploadDocumentRequest {
   file: string | Buffer | File
   instructions?: string
   job?: boolean
+  tables?: boolean
 }
 
 export interface UploadDocumentResponse extends BaseResponse {
@@ -25,7 +26,8 @@ export async function uploadDocument({
   file,
   type,
   instructions = '',
-  job = true
+  job = true,
+  tables = false
 }: UploadDocumentRequest & BaseRequest): Promise<UploadDocumentResponse> {
   const fileType =
     type ||
@@ -144,6 +146,7 @@ export async function uploadDocument({
     path,
     type: fileType,
     instructions,
-    job
+    job,
+    tables
   })) as UploadDocumentResponse
 }

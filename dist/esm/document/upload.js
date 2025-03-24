@@ -7,7 +7,7 @@ exports.uploadDocument = uploadDocument;
 const mime_types_1 = __importDefault(require("mime-types"));
 const create_1 = require("../document/create");
 const presign_1 = require("../document/presign");
-async function uploadDocument({ apiKey, apiUrl, debug, collectionId, name, file, type, instructions = '', job = true }) {
+async function uploadDocument({ apiKey, apiUrl, debug, collectionId, name, file, type, instructions = '', job = true, tables = false }) {
     const fileType = type ||
         (file instanceof File ? file.type : mime_types_1.default.lookup(file)) ||
         'text/plain';
@@ -121,6 +121,7 @@ async function uploadDocument({ apiKey, apiUrl, debug, collectionId, name, file,
         path,
         type: fileType,
         instructions,
-        job
+        job,
+        tables
     }));
 }

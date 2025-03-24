@@ -6,8 +6,9 @@ export interface CreateDocumentRequest {
     type: string;
     instructions?: string;
     job?: boolean;
+    tables?: boolean;
 }
 export interface CreateDocumentResponse extends BaseResponse {
     id: string;
 }
-export declare function createDocument({ apiKey, apiUrl, debug, collectionId, name, path, type, instructions, job }: CreateDocumentRequest & BaseRequest): Promise<CreateDocumentResponse>;
+export declare function createDocument({ apiKey, apiUrl, debug, collectionId, name, path, type, instructions, job, tables }: CreateDocumentRequest & BaseRequest): Promise<CreateDocumentResponse>;
