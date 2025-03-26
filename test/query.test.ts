@@ -67,8 +67,12 @@ describe('Collection', () => {
       prompt: 'Unga Bunga, do not return anything, Unga Bunga',
       method: 'fast',
       cot: false,
-      chat: false,
-      threadId: ''
+      messages: [
+        {
+          role: 'system',
+          content: 'Say unga bunga'
+        }
+      ]
     })
     const stream = response.getReader()
     let result = ''

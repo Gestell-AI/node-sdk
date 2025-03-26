@@ -14,7 +14,6 @@ if (!organizationId) {
 describe('Document', () => {
   let collectionId = ''
   let documentId = ''
-  let jobId = ''
 
   test('Create Test Collection', async () => {
     const response = await gestell.collection.create({
@@ -101,11 +100,10 @@ describe('Document', () => {
   test('Get', async () => {
     const response = await gestell.document.get({ collectionId, documentId })
     expect(response.status).toEqual('OK')
-    jobId = response.result?.job?.id || ''
   })
 
   test('Get Document Job', async () => {
-    const response = await gestell.job.get({ collectionId, jobId })
+    const response = await gestell.job.get({ collectionId, documentId })
     expect(response.status).toEqual('OK')
   })
 
@@ -113,13 +111,16 @@ describe('Document', () => {
     const response = await gestell.job.reprocess({
       collectionId,
       type: 'status',
-      ids: [jobId]
+      ids: [documentId]
     })
     expect(response.status).toEqual('OK')
   })
 
   test('Cancel Document Job', async () => {
-    const response = await gestell.job.cancel({ collectionId, ids: [jobId] })
+    const response = await gestell.job.cancel({
+      collectionId,
+      ids: [documentId]
+    })
     expect(response.status).toEqual('OK')
   })
 

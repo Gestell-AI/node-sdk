@@ -15,12 +15,16 @@ export interface QueryPayload {
   includeEdges?: boolean
 }
 
+export interface PromptMessage {
+  role: 'user' | 'model' | 'system'
+  content: string
+}
+
 export interface PromptPayload
   extends Omit<QueryPayload, 'includeContent' | 'includeEdges'> {
   template?: string
   cot?: boolean
-  threadId?: string
-  chat?: boolean
+  messages?: PromptMessage[]
 }
 
 export interface QueryDefaults {

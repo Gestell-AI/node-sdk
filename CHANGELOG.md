@@ -1,5 +1,18 @@
 # CHANGELOG
 
+## 1.3.0
+
+- Deprecated `threadId` and `chat` flags, instead use messages for history:
+
+```typescript
+interface Message {
+  role: 'user' | 'model' | 'system'
+  content: string
+}
+```
+
+- Updated job management to use `documentId` only
+
 ## 1.2.3
 
 - Added the tables flag for document upload and creation
