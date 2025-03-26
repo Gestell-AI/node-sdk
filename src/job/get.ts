@@ -4,7 +4,7 @@ import loadFetch from '@gestell/util/fetch'
 
 export interface GetJobRequest {
   collectionId: string
-  jobId: string
+  documentId: string
 }
 
 export interface GetJobResponse extends BaseResponse {
@@ -16,10 +16,13 @@ export async function getJob({
   apiUrl,
   debug,
   collectionId,
-  jobId
+  documentId
 }: GetJobRequest & BaseRequest): Promise<GetJobResponse> {
   const fetch = await loadFetch()
-  const url = new URL(`/api/collection/${collectionId}/job/${jobId}`, apiUrl)
+  const url = new URL(
+    `/api/collection/${collectionId}/job/${documentId}`,
+    apiUrl
+  )
 
   const payload = await fetch(url, {
     method: 'GET',

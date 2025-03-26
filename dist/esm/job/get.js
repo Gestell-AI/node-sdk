@@ -5,9 +5,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getJob = getJob;
 const fetch_1 = __importDefault(require("../util/fetch"));
-async function getJob({ apiKey, apiUrl, debug, collectionId, jobId }) {
+async function getJob({ apiKey, apiUrl, debug, collectionId, documentId }) {
     const fetch = await (0, fetch_1.default)();
-    const url = new URL(`/api/collection/${collectionId}/job/${jobId}`, apiUrl);
+    const url = new URL(`/api/collection/${collectionId}/job/${documentId}`, apiUrl);
     const payload = await fetch(url, {
         method: 'GET',
         headers: {

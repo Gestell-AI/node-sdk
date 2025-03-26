@@ -162,7 +162,7 @@ describe('Error', () => {
   test('collection.job.get', async () => {
     const response = await gestell.job.get({
       collectionId: '...',
-      jobId: '...'
+      documentId: '...'
     })
     expect(response.status).toBe('ERROR')
   })

@@ -469,10 +469,9 @@ export class Gestell {
      * - `nodeDepth`: An optional depth of node search.
      * - `maxQueries`: An optional maximum number of queries to run.
      * - `maxResults`: An optional maximum number of results to return.
-     * - `template`: An optional template to use for the prompt.
+     * - `template`: An optional system template to use for the prompt
      * - `cot`: A flag indicating whether to use chain-of-thought reasoning (optional).
-     * - `threadId`: An optional thread ID to associate with the query.
-     * - `chat`: A flag indicating whether the query is part of a chat (optional).
+     * - `messages`: The message history for the chat
      * @returns A promise that resolves to a readable stream of the prompt query response.
      */
     prompt: (payload: PromptPayload) => Promise<ReadableStream<string>>
@@ -713,7 +712,7 @@ export class Gestell {
      * Learn more about usage at: https://gestell.ai/docs/reference#job
      *
      * @param collectionId - The ID of the collection where the job exists.
-     * @param jobId - The ID of the job to retrieve.
+     * @param documentId - The Document ID for the job to retrieve.
      * @returns A promise that resolves to the job details, including:
      *   - `status`: The status of the job.
      *   - `message`: An optional message providing additional details about the job.
@@ -745,8 +744,8 @@ export class Gestell {
      *
      * @param collectionId - The ID of the collection where the job will be created.
      * @param payload - The job creation parameters, including:
-     *   - `ids`: An array of string IDs representing the entities to process in the job.
-     *   - `type`: The type of the job to create (e.g., 'status', 'nodes', 'vectors', 'edges', 'category').
+     *   - `ids`: An array of Document IDs to reprocess
+     *   - `type`: The type of the job to dispatch reprocessing for ('status', 'nodes', 'vectors', 'edges', 'category').
      * @returns A promise that resolves to the response of the job creation request, including:
      *   - `status`: The result status of the job creation request.
      *   - `message`: An optional message providing additional details about the job creation.

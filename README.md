@@ -90,6 +90,7 @@ node dist/cjs/src/index.js
 export GESTELL_API_URL="..." # If running on staging or locally
 export GESTELL_API_KEY="..."
 bun run test
+bun run test:submit
 
 # Verify and test the package externally with bun link
 bun link

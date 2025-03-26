@@ -17,8 +17,7 @@ export async function promptQuery({
   maxResults = QueryKV[method].maxResults,
   template = '',
   cot = true,
-  threadId = '',
-  chat = false
+  messages = []
 }: PromptPayload & BaseRequest): Promise<ReadableStream<string>> {
   const fetch = await loadFetch()
   const url = new URL(`/api/collection/${collectionId}/prompt`, apiUrl)
@@ -40,8 +39,7 @@ export async function promptQuery({
       maxResults,
       template,
       cot,
-      threadId,
-      chat
+      messages
     })
   })
 
