@@ -1,15 +1,29 @@
 import type { BaseRequest, BaseResponse } from '@gestell/types/base'
-import { CategoryType } from '@gestell/types/category'
+import { CategoryType } from '@gestell/types/collection'
 import loadFetch from '@gestell/util/fetch'
 
+/**
+ * Request payload for updating a category within a collection.
+ */
 export interface UpdateCategoryRequest {
+  /** The ID of the collection containing the category. */
   collectionId: string
+  /** The ID of the category to update. */
   categoryId: string
+  /** The new display name for the category. */
   name?: string
+  /** The type of category. */
   type?: CategoryType
+  /** The instructions or description for this category. */
   instructions?: string
+  /** If true, only a single entry is allowed in this category. */
+  singleEntry?: boolean
 }
 
+/**
+ * Response returned after updating a category.
+ * Inherits standard response fields from BaseResponse.
+ */
 export type UpdateCategoryResponse = BaseResponse
 
 export async function updateCategory({
@@ -20,7 +34,8 @@ export async function updateCategory({
   categoryId,
   name,
   type,
-  instructions
+  instructions,
+  singleEntry
 }: UpdateCategoryRequest & BaseRequest): Promise<UpdateCategoryResponse> {
   const fetch = await loadFetch()
   const url = new URL(`/api/collection/${collectionId}/category`, apiUrl)
@@ -34,7 +49,8 @@ export async function updateCategory({
       categoryId,
       name,
       type,
-      instructions
+      instructions,
+      singleEntry
     })
   })
 

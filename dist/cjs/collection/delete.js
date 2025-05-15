@@ -5,9 +5,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteCollection = deleteCollection;
 const fetch_1 = __importDefault(require("../util/fetch"));
-async function deleteCollection({ apiKey, apiUrl, debug, id }) {
+async function deleteCollection({ apiKey, apiUrl, debug, collectionId }) {
     const fetch = await (0, fetch_1.default)();
-    const url = new URL(`/api/collection/${id}`, apiUrl);
+    const url = new URL(`/api/collection/${collectionId}`, apiUrl);
     const payload = await fetch(url, {
         method: 'DELETE',
         headers: {

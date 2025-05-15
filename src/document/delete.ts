@@ -1,11 +1,19 @@
 import type { BaseRequest, BaseResponse } from '@gestell/types/base'
 import loadFetch from '@gestell/util/fetch'
 
+/**
+ * Request parameters for deleting a specific document from a collection.
+ */
 export interface DeleteDocumentRequest {
+  /** ID of the collection containing the document */
   collectionId: string
+  /** ID of the document to delete */
   documentId: string
 }
 
+/**
+ * Response data from a document deletion operation.
+ */
 export type DeleteDocumentResponse = BaseResponse
 
 export async function deleteDocument({

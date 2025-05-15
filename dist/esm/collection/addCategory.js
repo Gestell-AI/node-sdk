@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.addCategory = addCategory;
 const fetch_1 = __importDefault(require("../util/fetch"));
-async function addCategory({ apiKey, apiUrl, debug, collectionId, name, type, instructions }) {
+async function addCategory({ apiKey, apiUrl, debug, collectionId, name, type, instructions, singleEntry = false }) {
     const fetch = await (0, fetch_1.default)();
     const url = new URL(`/api/collection/${collectionId}/category`, apiUrl);
     const payload = await fetch(url, {
@@ -16,7 +16,8 @@ async function addCategory({ apiKey, apiUrl, debug, collectionId, name, type, in
         body: JSON.stringify({
             name,
             type,
-            instructions
+            instructions,
+            singleEntry
         })
     });
     if (!payload.ok) {

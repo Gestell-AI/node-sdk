@@ -3,9 +3,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.reprocessDocument = reprocessDocument;
+exports.reprocessDocuments = reprocessDocuments;
 const fetch_1 = __importDefault(require("../util/fetch"));
-async function reprocessDocument({ apiKey, apiUrl, debug, collectionId, ids, type }) {
+async function reprocessDocuments({ apiKey, apiUrl, debug, collectionId, ids, type }) {
     const fetch = await (0, fetch_1.default)();
     const url = new URL(`/api/collection/${collectionId}/job`, apiUrl);
     const payload = await fetch(url, {

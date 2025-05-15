@@ -1,5 +1,9 @@
 import type { BaseRequest, BaseResponse } from '@gestell/types/base'
-import { QueryKV, QueryPayload, SearchResult } from '@gestell/types/query'
+import {
+  SearchModes,
+  SearchRequestBody,
+  SearchResult
+} from '@gestell/types/query'
 import loadFetch from '@gestell/util/fetch'
 
 export interface SearchQueryResponse extends BaseResponse {
@@ -14,14 +18,14 @@ export async function searchQuery({
   categoryId = '',
   prompt,
   method = 'normal',
-  type = QueryKV[method].type,
-  vectorDepth = QueryKV[method].vectorDepth,
-  nodeDepth = QueryKV[method].nodeDepth,
-  maxQueries = QueryKV[method].maxQueries,
-  maxResults = QueryKV[method].maxResults,
+  type = SearchModes[method as keyof typeof SearchModes].type,
+  vectorDepth = SearchModes[method as keyof typeof SearchModes].vectorDepth,
+  nodeDepth = SearchModes[method as keyof typeof SearchModes].nodeDepth,
+  maxQueries = SearchModes[method as keyof typeof SearchModes].maxQueries,
+  maxResults = SearchModes[method as keyof typeof SearchModes].maxResults,
   includeContent = true,
   includeEdges = false
-}: QueryPayload & BaseRequest): Promise<SearchQueryResponse> {
+}: SearchRequestBody & BaseRequest): Promise<SearchQueryResponse> {
   const fetch = await loadFetch()
   const url = new URL(`/api/collection/${collectionId}/search`, apiUrl)
 

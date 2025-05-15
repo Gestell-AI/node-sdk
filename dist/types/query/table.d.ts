@@ -4,8 +4,9 @@ export interface TablesQueryRequest {
     categoryId: string;
     skip?: number;
     take?: number;
+    prompt?: string;
 }
 export interface TablesQueryResponse extends BaseResponse {
-    result: object[];
+    result: Record<string, string>[];
 }
-export declare function tablesQuery({ apiKey, apiUrl, debug, collectionId, categoryId, skip, take }: TablesQueryRequest & BaseRequest): Promise<TablesQueryResponse>;
+export declare function tablesQuery({ apiKey, apiUrl, debug, collectionId, categoryId, skip, take, prompt }: TablesQueryRequest & BaseRequest): Promise<TablesQueryResponse>;

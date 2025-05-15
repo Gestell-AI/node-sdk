@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createCollection = createCollection;
 const fetch_1 = __importDefault(require("../util/fetch"));
-async function createCollection({ apiKey, apiUrl, debug, organizationId, name, description, type, instructions, graphInstructions, promptInstructions, searchInstructions, categories }) {
+async function createCollection({ apiKey, apiUrl, debug, organizationId, name, description, type, tags, pii, piiControls, instructions, graphInstructions, promptInstructions, searchInstructions, categories }) {
     const fetch = await (0, fetch_1.default)();
     const url = new URL(`/api/collection`, apiUrl);
     const payload = await fetch(url, {
@@ -18,6 +18,9 @@ async function createCollection({ apiKey, apiUrl, debug, organizationId, name, d
             name,
             description,
             type,
+            tags,
+            pii,
+            piiControls,
             instructions,
             graphInstructions,
             promptInstructions,

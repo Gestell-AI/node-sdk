@@ -5,9 +5,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.exportFeatures = exportFeatures;
 const fetch_1 = __importDefault(require("../util/fetch"));
-async function exportFeatures({ apiKey, apiUrl, debug, collectionId, categoryId, type = 'json' }) {
+async function exportFeatures({ apiKey, apiUrl, debug, collectionId, categoryId, format = 'json', skip = 0, take = 10 }) {
     const fetch = await (0, fetch_1.default)();
-    const url = new URL(`/api/collection/${collectionId}/features/export?categoryId=${categoryId}&type=${type}`, apiUrl);
+    const url = new URL(`/api/collection/${collectionId}/features/export?categoryId=${categoryId}&format=${format}&skip=${skip}&take=${take}`, apiUrl);
     const payload = await fetch(url, {
         method: 'GET',
         headers: {
@@ -25,7 +25,7 @@ async function exportFeatures({ apiKey, apiUrl, debug, collectionId, categoryId,
             result: []
         };
     }
-    if (type === 'json') {
+    if (format === 'json') {
         const response = (await payload.json());
         return response;
     }

@@ -5,8 +5,8 @@ import loadFetch from '@gestell/util/fetch'
 export interface FeaturesQueryRequest {
   collectionId: string
   categoryId: string
-  skip?: number
   take?: number
+  skip?: number
 }
 
 export interface FeaturesQueryResponse extends BaseResponse {

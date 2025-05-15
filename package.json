@@ -1,6 +1,6 @@
 {
   "name": "@gestell/sdk",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "The Official Gestell Node.js SDK",
   "private": false,
   "repository": "https://github.com/Gestell-AI/node-sdk.git",
@@ -14,34 +14,41 @@
       "require": "./dist/cjs/index.js",
       "import": "./dist/esm/index.js",
       "default": "./dist/esm/index.js"
+    },
+    "./types": {
+      "import": "./dist/types/types.d.ts",
+      "require": "./dist/types/types.d.ts",
+      "types": "./dist/types/types.d.ts"
     }
   },
   "scripts": {
     "build": "npm run build:esm && npm run build:cjs && npm run build:types",
-    "build:esm": "tsc -p ./dist/tsconfig.esm.json && tsc-alias -p ./dist/tsconfig.esm.json",
-    "build:cjs": "tsc -p ./dist/tsconfig.cjs.json && tsc-alias -p ./dist/tsconfig.cjs.json",
-    "build:types": "tsc -p ./dist/tsconfig.types.json && tsc-alias -p ./dist/tsconfig.types.json",
-    "test": "bun test --timeout 120000 --bail --coverage --coverage-reporter lcov",
+    "build:tar": "npm run build && rm *.tgz && npm pack",
+    "build:esm": "rm -rf dist/esm && tsc -p ./dist/tsconfig.esm.json && tsc-alias -p ./dist/tsconfig.esm.json",
+    "build:cjs": "rm -rf dist/cjs && tsc -p ./dist/tsconfig.cjs.json && tsc-alias -p ./dist/tsconfig.cjs.json",
+    "build:types": "rm -rf dist/types && tsc -p ./dist/tsconfig.types.json && tsc-alias -p ./dist/tsconfig.types.json",
+    "test": "bun test --timeout 120000 --coverage --coverage-reporter=text --coverage-reporter=lcov",
     "test:submit": "cat ./coverage/lcov.info | coveralls",
     "lint": "eslint ."
   },
   "dependencies": {
-    "dotenv": "16.4.7",
-    "mime-types": "2.1.35",
-    "node-fetch": "2"
+    "dotenv": "16.5.0",
+    "mime-types": "3.0.1",
+    "node-fetch": "3.3.2"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "3.2.0",
-    "@eslint/js": "9.17.0",
-    "@types/bun": "1.1.14",
+    "@eslint/eslintrc": "3.3.1",
+    "@eslint/js": "9.26.0",
+    "@types/bun": "1.2.13",
     "@types/mime-types": "2.1.4",
-    "@types/node-fetch": "2",
+    "@types/node-fetch": "2.6.12",
     "coveralls": "3.1.1",
-    "eslint-config-prettier": "9.1.0",
-    "eslint-plugin-prettier": "5.2.1",
+    "eslint-config-prettier": "10.1.5",
+    "eslint-plugin-prettier": "5.4.0",
     "eslint-plugin-simple-import-sort": "12.1.1",
-    "tsc-alias": "1.8.10",
-    "typescript": "5.7.2",
-    "typescript-eslint": "8.18.0"
+    "jiti": "2.4.2",
+    "tsc-alias": "1.8.16",
+    "typescript": "5.8.3",
+    "typescript-eslint": "8.32.1"
   }
 }
