@@ -1,385 +1,137 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Gestell = void 0;
-const addCategory_1 = require("./collection/addCategory");
-const create_1 = require("./collection/create");
-const delete_1 = require("./collection/delete");
-const get_1 = require("./collection/get");
-const list_1 = require("./collection/list");
-const removeCategory_1 = require("./collection/removeCategory");
-const update_1 = require("./collection/update");
-const updateCategory_1 = require("./collection/updateCategory");
-const create_2 = require("./document/create");
-const delete_2 = require("./document/delete");
-const export_1 = require("./document/export");
-const get_2 = require("./document/get");
-const list_2 = require("./document/list");
-const presign_1 = require("./document/presign");
-const update_2 = require("./document/update");
-const upload_1 = require("./document/upload");
-const cancel_1 = require("./job/cancel");
-const get_3 = require("./job/get");
-const list_3 = require("./job/list");
-const reprocess_1 = require("./job/reprocess");
-const get_4 = require("./organization/get");
-const list_4 = require("./organization/list");
-const add_1 = require("./organization/members/add");
-const remove_1 = require("./organization/members/remove");
-const update_3 = require("./organization/update");
-const exportFeatures_1 = require("./query/exportFeatures");
-const exportTable_1 = require("./query/exportTable");
-const features_1 = require("./query/features");
-const prompt_1 = require("./query/prompt");
-const search_1 = require("./query/search");
-const table_1 = require("./query/table");
+const collection_1 = __importDefault(require("./service/collection"));
+const document_1 = __importDefault(require("./service/document"));
+const job_1 = __importDefault(require("./service/job"));
+const organization_1 = __importDefault(require("./service/organization"));
+const query_1 = __importDefault(require("./service/query"));
 /**
- * The Gestell SDK Instance
+ * The **Gestell SDK client**, providing access to all Gestell services.
+ *
+ * @example
+ * ```ts
+ * import Gestell from '@gestell/sdk'
+ *
+ * const client = new Gestell()
+ * const orgs = await client.organization.list()
+ * console.log(orgs)
+ * ```
+ *
+ * @remarks
+ * - Initialize with `debug: true` to emit verbose request/response logs.
+ * - All service helpers resolve to a strongly typed `{ status, message, … }` payload.
+ *
+ * @see https://gestell.ai/docs
  */
 class Gestell {
-    apiUrl;
-    apiKey;
-    debug;
     /**
-     * Manage organizations you are a part of.
-     * Learn more about usage at: https://gestell.ai/docs/reference#organization
+     * The **organization services** for the Gestell SDK.
+     *
+     * @remarks
+     * - Manage `Organization` resources: get, update, list
+     * - Must be an admin to update `Organization`
+     * - To create an `Organization` @see https://platform.gestell.ai
+     * - To update an `Organization` you must be an `admin`
+     *
+     * @example
+     * ```ts
+     * const result = await client.organization.list()
+     * console.log(result)
+     * ```
+     *
+     * @see https://gestell.ai/docs/reference#organization
      */
     organization;
     /**
-     * Manage collections you are a part of.
-     * Learn more about usage at: https://gestell.ai/docs/reference#collection
+     * The **collection services** for the Gestell SDK.
+     *
+     * @remarks
+     * - CRUD operations on `Collection` entities.
+     * - Category management and bulk-import helpers included.
+     *
+     * @example
+     * ```ts
+     * const cols = await client.collection.list()
+     * console.log(cols)
+     * ```
+     *
+     * @see https://gestell.ai/docs/reference#collection
      */
     collection;
     /**
-     * Query a collection. This requires your collection ID to query.
-     * Note that querying tables and features requires both a collectionId and categoryId.
-     * Learn more about usage at: https://gestell.ai/docs/reference#query
+     * The **query services** for the Gestell SDK.
      *
-     * @param collectionId - The ID of the collection
+     * @remarks
+     * - Execute semantic searches and prompt-based queries.
+     * - Supports customizable search `type`, `method`, and advanced tuning parameters.
+     *
+     * @example
+     * ```ts
+     * const search = await client.query.search({
+     *   collectionId: 'UUID',
+     *   prompt: 'Give me a summary of the ULTA filing from 2024'
+     * })
+     * console.log(search)
+     * ```
+     *
+     * @see https://gestell.ai/docs/reference#query
      */
     query;
     /**
-     * Manage documents within a collection. You will need to retrieve the collection id to manage documents.
-     * Learn more about usage at: https://gestell.ai/docs/reference#document
+     * The **document services** for the Gestell SDK.
      *
-     * @param collectionId - The ID of the collection
-     * @param documentId - The ID of the document, this is usually required unless creating a document
+     * @remarks
+     * - Upload, retrieve, update, and delete documents.
+     * - Strongly typed responses and optional content streaming.
+     * - Debug logs available when `debug: true`.
+     *
+     * @example
+     * ```ts
+     * const docs = await client.document.list()
+     * console.log(docs)
+     * ```
+     *
+     * @see https://gestell.ai/docs/reference#document
      */
     document;
     /**
-     * Manage jobs within a collection. You will need to retrieve the collection id to manage jobs.
-     * Learn more about usage at: https://gestell.ai/docs/reference#job
+     * The **job services** for the Gestell SDK.
      *
-     * @param collectionId - The ID of the collection
+     * @remarks
+     * - Create long-running jobs (e.g., batch imports, exports).
+     * - Poll for status, retrieve results, and manage retries.
+     *
+     * @example
+     * ```ts
+     * const job = await client.job.get({ collectionId: 'UUID', documentId: 'UUID' })
+     * console.log(job)
+     * ```
+     *
+     * @see https://gestell.ai/docs/reference#job
      */
     job;
     /**
-     * Configuration options for the Gestell SDK.
-     * Review usage in depth at: https://gestell.ai/docs/reference
+     * Create a new Gestell SDK client.
      *
-     * @param GestellInit
-     * @property {string} [key] - The API key for authentication.
-     * @property {string} [url] - The base URL for the API.
-     * @property {boolean} [debug] - Flag to enable debug logging.
+     * @param {GestellOptions} [options={}] - Configuration options.
+     * @param {string} [options.key]        - API key for authentication.
+     * @param {string} [options.url]        - Base API URL.
+     * @param {boolean} [options.debug]     - Enable debug logging.
      */
-    constructor(payload) {
+    constructor(options = {}) {
+        // Load environment variables when running on the server
         if (typeof window === 'undefined') {
             require('dotenv').config();
         }
-        this.apiUrl =
-            payload?.url ||
-                process.env.GESTELL_API_URL ||
-                'https://platform.gestell.ai';
-        this.apiKey = payload?.key || process.env.GESTELL_API_KEY || '';
-        this.debug = payload?.debug || false;
-        this.organization = {
-            get: this.getOrganization.bind(this),
-            list: this.getOrganizations.bind(this),
-            update: this.updateOrganization.bind(this),
-            addMembers: this.addMembers.bind(this),
-            removeMembers: this.removeMembers.bind(this)
-        };
-        this.collection = {
-            get: this.getCollection.bind(this),
-            list: this.getCollections.bind(this),
-            create: this.createCollection.bind(this),
-            update: this.updateCollection.bind(this),
-            delete: this.deleteCollection.bind(this),
-            addCategory: this.addCategory.bind(this),
-            updateCategory: this.updateCategory.bind(this),
-            removeCategory: this.removeCategory.bind(this)
-        };
-        this.query = {
-            search: this.searchQuery.bind(this),
-            prompt: this.promptQuery.bind(this),
-            features: this.featuresQuery.bind(this),
-            featuresExport: this.featuresExport.bind(this),
-            table: this.tablesQuery.bind(this),
-            tableExport: this.tableExport.bind(this)
-        };
-        this.document = {
-            get: this.getDocument.bind(this),
-            export: this.exportDocument.bind(this),
-            list: this.getDocuments.bind(this),
-            upload: this.uploadDocument.bind(this),
-            presign: this.presignDocument.bind(this),
-            create: this.createDocument.bind(this),
-            update: this.updateDocument.bind(this),
-            delete: this.deleteDocument.bind(this)
-        };
-        this.job = {
-            get: this.getJob.bind(this),
-            list: this.getJobs.bind(this),
-            reprocess: this.reprocessJobs.bind(this),
-            cancel: this.cancelJobs.bind(this)
-        };
-    }
-    async getOrganization(id) {
-        return await (0, get_4.getOrganization)({
-            id,
-            apiKey: this.apiKey,
-            apiUrl: this.apiUrl,
-            debug: this.debug
-        });
-    }
-    async getOrganizations(payload) {
-        return await (0, list_4.getOrganizations)({
-            ...payload,
-            apiKey: this.apiKey,
-            apiUrl: this.apiUrl,
-            debug: this.debug
-        });
-    }
-    async updateOrganization(payload) {
-        return await (0, update_3.updateOrganization)({
-            ...payload,
-            apiKey: this.apiKey,
-            apiUrl: this.apiUrl,
-            debug: this.debug
-        });
-    }
-    async addMembers(payload) {
-        return await (0, add_1.addMembers)({
-            ...payload,
-            apiKey: this.apiKey,
-            apiUrl: this.apiUrl,
-            debug: this.debug
-        });
-    }
-    async removeMembers(payload) {
-        return await (0, remove_1.removeMembers)({
-            ...payload,
-            apiKey: this.apiKey,
-            apiUrl: this.apiUrl,
-            debug: this.debug
-        });
-    }
-    async getCollection(collectionId) {
-        return await (0, get_1.getCollection)({
-            collectionId,
-            apiKey: this.apiKey,
-            apiUrl: this.apiUrl,
-            debug: this.debug
-        });
-    }
-    async getCollections(payload) {
-        return await (0, list_1.getCollections)({
-            ...payload,
-            apiKey: this.apiKey,
-            apiUrl: this.apiUrl,
-            debug: this.debug
-        });
-    }
-    async createCollection(payload) {
-        return await (0, create_1.createCollection)({
-            ...payload,
-            apiKey: this.apiKey,
-            apiUrl: this.apiUrl,
-            debug: this.debug
-        });
-    }
-    async updateCollection(payload) {
-        return await (0, update_1.updateCollection)({
-            ...payload,
-            apiKey: this.apiKey,
-            apiUrl: this.apiUrl,
-            debug: this.debug
-        });
-    }
-    async deleteCollection(id) {
-        return await (0, delete_1.deleteCollection)({
-            id,
-            apiKey: this.apiKey,
-            apiUrl: this.apiUrl,
-            debug: this.debug
-        });
-    }
-    async addCategory(payload) {
-        return await (0, addCategory_1.addCategory)({
-            ...payload,
-            apiKey: this.apiKey,
-            apiUrl: this.apiUrl,
-            debug: this.debug
-        });
-    }
-    async updateCategory(payload) {
-        return await (0, updateCategory_1.updateCategory)({
-            ...payload,
-            apiKey: this.apiKey,
-            apiUrl: this.apiUrl,
-            debug: this.debug
-        });
-    }
-    async removeCategory(payload) {
-        return await (0, removeCategory_1.removeCategory)({
-            ...payload,
-            apiKey: this.apiKey,
-            apiUrl: this.apiUrl,
-            debug: this.debug
-        });
-    }
-    async searchQuery(payload) {
-        return await (0, search_1.searchQuery)({
-            ...payload,
-            apiKey: this.apiKey,
-            apiUrl: this.apiUrl,
-            debug: this.debug
-        });
-    }
-    async promptQuery(payload) {
-        return await (0, prompt_1.promptQuery)({
-            ...payload,
-            apiKey: this.apiKey,
-            apiUrl: this.apiUrl,
-            debug: this.debug
-        });
-    }
-    async featuresQuery(payload) {
-        return await (0, features_1.featuresQuery)({
-            ...payload,
-            apiKey: this.apiKey,
-            apiUrl: this.apiUrl,
-            debug: this.debug
-        });
-    }
-    async featuresExport(payload) {
-        return await (0, exportFeatures_1.exportFeatures)({
-            ...payload,
-            apiKey: this.apiKey,
-            apiUrl: this.apiUrl,
-            debug: this.debug
-        });
-    }
-    async tablesQuery(payload) {
-        return await (0, table_1.tablesQuery)({
-            ...payload,
-            apiKey: this.apiKey,
-            apiUrl: this.apiUrl,
-            debug: this.debug
-        });
-    }
-    async tableExport(payload) {
-        return await (0, exportTable_1.exportTable)({
-            ...payload,
-            apiKey: this.apiKey,
-            apiUrl: this.apiUrl,
-            debug: this.debug
-        });
-    }
-    async getDocument(payload) {
-        return await (0, get_2.getDocument)({
-            ...payload,
-            apiKey: this.apiKey,
-            apiUrl: this.apiUrl,
-            debug: this.debug
-        });
-    }
-    async exportDocument(payload) {
-        return await (0, export_1.exportDocument)({
-            ...payload,
-            apiKey: this.apiKey,
-            apiUrl: this.apiUrl,
-            debug: this.debug
-        });
-    }
-    async getDocuments(payload) {
-        return await (0, list_2.getDocuments)({
-            ...payload,
-            apiKey: this.apiKey,
-            apiUrl: this.apiUrl,
-            debug: this.debug
-        });
-    }
-    async uploadDocument(payload) {
-        return await (0, upload_1.uploadDocument)({
-            ...payload,
-            apiKey: this.apiKey,
-            apiUrl: this.apiUrl,
-            debug: this.debug
-        });
-    }
-    async presignDocument(payload) {
-        return await (0, presign_1.presignDocument)({
-            ...payload,
-            apiKey: this.apiKey,
-            apiUrl: this.apiUrl,
-            debug: this.debug
-        });
-    }
-    async createDocument(payload) {
-        return await (0, create_2.createDocument)({
-            ...payload,
-            apiKey: this.apiKey,
-            apiUrl: this.apiUrl,
-            debug: this.debug
-        });
-    }
-    async updateDocument(payload) {
-        return await (0, update_2.updateDocument)({
-            ...payload,
-            apiKey: this.apiKey,
-            apiUrl: this.apiUrl,
-            debug: this.debug
-        });
-    }
-    async deleteDocument(payload) {
-        return await (0, delete_2.deleteDocument)({
-            ...payload,
-            apiKey: this.apiKey,
-            apiUrl: this.apiUrl,
-            debug: this.debug
-        });
-    }
-    async getJob(payload) {
-        return await (0, get_3.getJob)({
-            ...payload,
-            apiKey: this.apiKey,
-            apiUrl: this.apiUrl,
-            debug: this.debug
-        });
-    }
-    async getJobs(payload) {
-        return await (0, list_3.getJobs)({
-            ...payload,
-            apiKey: this.apiKey,
-            apiUrl: this.apiUrl,
-            debug: this.debug
-        });
-    }
-    async reprocessJobs(payload) {
-        return await (0, reprocess_1.reprocessDocument)({
-            ...payload,
-            apiKey: this.apiKey,
-            apiUrl: this.apiUrl,
-            debug: this.debug
-        });
-    }
-    async cancelJobs(payload) {
-        return await (0, cancel_1.cancelJobs)({
-            ...payload,
-            apiKey: this.apiKey,
-            apiUrl: this.apiUrl,
-            debug: this.debug
-        });
+        this.organization = (0, organization_1.default)(options);
+        this.collection = (0, collection_1.default)(options);
+        this.query = (0, query_1.default)(options);
+        this.document = (0, document_1.default)(options);
+        this.job = (0, job_1.default)(options);
     }
 }
 exports.Gestell = Gestell;

@@ -4,11 +4,13 @@ import loadFetch from '@gestell/util/fetch'
 export interface ExportTableRequest {
   collectionId: string
   categoryId: string
-  type?: 'json' | 'csv'
+  format?: 'json' | 'csv'
+  take?: number
+  skip?: number
 }
 
 export interface ExportTableResponse extends BaseResponse {
-  result: object[]
+  result: Record<string, string>[] | string
 }
 
 export async function exportTable({
@@ -17,11 +19,13 @@ export async function exportTable({
   debug,
   collectionId,
   categoryId,
-  type = 'json'
+  format = 'json',
+  skip = 0,
+  take = 10
 }: ExportTableRequest & BaseRequest): Promise<ExportTableResponse | string> {
   const fetch = await loadFetch()
   const url = new URL(
-    `/api/collection/${collectionId}/table/export?categoryId=${categoryId}&type=${type}`,
+    `/api/collection/${collectionId}/table/export?categoryId=${categoryId}&format=${format}&skip=${skip}&take=${take}`,
     apiUrl
   )
 
@@ -45,7 +49,7 @@ export async function exportTable({
     }
   }
 
-  if (type === 'json') {
+  if (format === 'json') {
     const response = (await payload.json()) as ExportTableResponse
     return response
   } else {

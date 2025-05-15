@@ -1,20 +1,28 @@
 import type { BaseRequest, BaseResponse } from '@gestell/types/base'
 import loadFetch from '@gestell/util/fetch'
 
+/**
+ * Request payload for deleting a collection.
+ */
 export interface DeleteCollectionRequest {
-  id: string
+  /** The ID of the collection to be deleted. */
+  collectionId: string
 }
 
+/**
+ * Response returned after a collection deletion operation.
+ * Inherits standard response fields from BaseResponse.
+ */
 export type DeleteCollectionResponse = BaseResponse
 
 export async function deleteCollection({
   apiKey,
   apiUrl,
   debug,
-  id
+  collectionId
 }: DeleteCollectionRequest & BaseRequest): Promise<DeleteCollectionResponse> {
   const fetch = await loadFetch()
-  const url = new URL(`/api/collection/${id}`, apiUrl)
+  const url = new URL(`/api/collection/${collectionId}`, apiUrl)
 
   const payload = await fetch(url, {
     method: 'DELETE',

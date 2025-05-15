@@ -6,10 +6,11 @@ export interface TablesQueryRequest {
   categoryId: string
   skip?: number
   take?: number
+  prompt?: string
 }
 
 export interface TablesQueryResponse extends BaseResponse {
-  result: object[]
+  result: Record<string, string>[]
 }
 
 export async function tablesQuery({
@@ -19,7 +20,8 @@ export async function tablesQuery({
   collectionId,
   categoryId,
   skip = 0,
-  take = 10
+  take = 10,
+  prompt = ''
 }: TablesQueryRequest & BaseRequest): Promise<TablesQueryResponse> {
   const fetch = await loadFetch()
   const url = new URL(`/api/collection/${collectionId}/table`, apiUrl)
@@ -33,7 +35,8 @@ export async function tablesQuery({
       collectionId,
       categoryId,
       skip,
-      take
+      take,
+      prompt
     })
   })
 

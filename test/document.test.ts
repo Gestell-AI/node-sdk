@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'bun:test'
+import { afterAll, describe, expect, test } from 'bun:test'
 import { createReadStream, readFileSync } from 'fs'
 import { join } from 'path'
 import Gestell from '@gestell/index'
@@ -12,14 +12,16 @@ if (!organizationId) {
 }
 
 describe('Document', () => {
+  let colDeleted = false
+  let docDeleted = false
   let collectionId = ''
   let documentId = ''
 
   test('Create Test Collection', async () => {
     const response = await gestell.collection.create({
       organizationId,
-      name: 'Automated Test Collection',
-      description: 'An automated test collection',
+      name: 'Automated Document Collection',
+      description: 'An automated document collection',
       type: 'frame'
     })
 
@@ -124,13 +126,32 @@ describe('Document', () => {
     expect(response.status).toEqual('OK')
   })
 
-  test('Delete', async () => {
+  test('Delete Test Document', async () => {
     const response = await gestell.document.delete({ collectionId, documentId })
+    docDeleted = true
     expect(response.status).toEqual('OK')
   })
 
   test('Delete Test Collection', async () => {
     const response = await gestell.collection.delete(collectionId)
+    colDeleted = true
     expect(response.status).toEqual('OK')
+  })
+
+  afterAll(async () => {
+    if (collectionId && documentId && docDeleted === false) {
+      try {
+        await gestell.document.delete({ collectionId, documentId })
+      } catch (error) {
+        console.error(error)
+      }
+    }
+    if (collectionId && colDeleted === false) {
+      try {
+        await gestell.collection.delete(collectionId)
+      } catch (error) {
+        console.error(error)
+      }
+    }
   })
 })

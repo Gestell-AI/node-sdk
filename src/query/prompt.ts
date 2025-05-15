@@ -1,5 +1,5 @@
 import type { BaseRequest } from '@gestell/types/base'
-import { PromptPayload, QueryKV } from '@gestell/types/query'
+import { PromptRequestBody, SearchModes } from '@gestell/types/query'
 import loadFetch from '@gestell/util/fetch'
 
 export async function promptQuery({
@@ -10,15 +10,15 @@ export async function promptQuery({
   categoryId = '',
   prompt,
   method = 'normal',
-  type = QueryKV[method].type,
-  vectorDepth = QueryKV[method].vectorDepth,
-  nodeDepth = QueryKV[method].nodeDepth,
-  maxQueries = QueryKV[method].maxQueries,
-  maxResults = QueryKV[method].maxResults,
+  type = SearchModes[method as keyof typeof SearchModes].type,
+  vectorDepth = SearchModes[method as keyof typeof SearchModes].vectorDepth,
+  nodeDepth = SearchModes[method as keyof typeof SearchModes].nodeDepth,
+  maxQueries = SearchModes[method as keyof typeof SearchModes].maxQueries,
+  maxResults = SearchModes[method as keyof typeof SearchModes].maxResults,
   template = '',
   cot = true,
   messages = []
-}: PromptPayload & BaseRequest): Promise<ReadableStream<string>> {
+}: PromptRequestBody & BaseRequest): Promise<ReadableStream<string>> {
   const fetch = await loadFetch()
   const url = new URL(`/api/collection/${collectionId}/prompt`, apiUrl)
 

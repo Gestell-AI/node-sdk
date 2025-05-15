@@ -3,8 +3,8 @@ import { FeatureLayout } from '../types/layout';
 export interface FeaturesQueryRequest {
     collectionId: string;
     categoryId: string;
-    skip?: number;
     take?: number;
+    skip?: number;
 }
 export interface FeaturesQueryResponse extends BaseResponse {
     result: FeatureLayout[];

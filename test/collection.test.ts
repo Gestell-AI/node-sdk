@@ -1,7 +1,7 @@
-import { describe, expect, test } from 'bun:test'
+import { afterAll, describe, expect, test } from 'bun:test'
 import Gestell from '@gestell/index'
 
-const gestell = new Gestell()
+export const gestell = new Gestell()
 const organizationId = process.env.ORGANIZATION_ID || ''
 
 if (!organizationId) {
@@ -10,14 +10,15 @@ if (!organizationId) {
 }
 
 describe('Collection', () => {
+  let deleted = false
   let collectionId = ''
   let categoryId = ''
 
   test('Create', async () => {
     const response = await gestell.collection.create({
       organizationId,
-      name: 'Automated Test Collection',
-      description: 'An automated test collection',
+      name: 'Automated Collection',
+      description: 'An automated collection',
       type: 'canon'
     })
 
@@ -71,6 +72,7 @@ describe('Collection', () => {
     })
     expect(response.status).toEqual('OK')
     categoryId = response.id
+    expect(categoryId.length).toBeGreaterThan(1)
   })
 
   test('Update Category', async () => {
@@ -93,6 +95,17 @@ describe('Collection', () => {
 
   test('Delete', async () => {
     const response = await gestell.collection.delete(collectionId)
+    deleted = true
     expect(response.status).toEqual('OK')
+  })
+
+  afterAll(async () => {
+    if (collectionId && deleted === false) {
+      try {
+        await gestell.collection.delete(collectionId)
+      } catch (error) {
+        console.error(error)
+      }
+    }
   })
 })

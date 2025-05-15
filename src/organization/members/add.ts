@@ -1,12 +1,21 @@
 import type { BaseRequest, BaseResponse } from '@gestell/types/base'
-import { OrganizationMemberPayload } from '@gestell/types/organization'
+import { OrganizationMemberRequest } from '@gestell/types/organization'
 import loadFetch from '@gestell/util/fetch'
 
+/**
+ * Request parameters for adding members to an organization.
+ */
 export interface AddMembersRequest {
+  /** ID of the organization to add members to */
   organizationId: string
-  members: OrganizationMemberPayload[]
+  /** Array of member objects to add to the organization */
+  members: OrganizationMemberRequest[]
 }
 
+/**
+ * Response data from a member addition operation.
+ * Extends the base response with standard status fields.
+ */
 export type AddMembersResponse = BaseResponse
 
 export async function addMembers({

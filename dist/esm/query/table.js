@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.tablesQuery = tablesQuery;
 const fetch_1 = __importDefault(require("../util/fetch"));
-async function tablesQuery({ apiKey, apiUrl, debug, collectionId, categoryId, skip = 0, take = 10 }) {
+async function tablesQuery({ apiKey, apiUrl, debug, collectionId, categoryId, skip = 0, take = 10, prompt = '' }) {
     const fetch = await (0, fetch_1.default)();
     const url = new URL(`/api/collection/${collectionId}/table`, apiUrl);
     const payload = await fetch(url, {
@@ -17,7 +17,8 @@ async function tablesQuery({ apiKey, apiUrl, debug, collectionId, categoryId, sk
             collectionId,
             categoryId,
             skip,
-            take
+            take,
+            prompt
         })
     });
     if (!payload.ok) {

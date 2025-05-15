@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateCollection = updateCollection;
 const fetch_1 = __importDefault(require("../util/fetch"));
-async function updateCollection({ apiKey, apiUrl, debug, collectionId, organizationId, name, type, description, instructions, graphInstructions, promptInstructions, searchInstructions, tags }) {
+async function updateCollection({ apiKey, apiUrl, debug, collectionId, organizationId, name, type, description, pii, piiControls, instructions, graphInstructions, promptInstructions, searchInstructions, tags }) {
     const fetch = await (0, fetch_1.default)();
     const url = new URL(`/api/collection/${collectionId}`, apiUrl);
     const payload = await fetch(url, {
@@ -18,6 +18,8 @@ async function updateCollection({ apiKey, apiUrl, debug, collectionId, organizat
             name,
             description,
             type,
+            pii,
+            piiControls,
             instructions,
             graphInstructions,
             promptInstructions,
@@ -32,8 +34,7 @@ async function updateCollection({ apiKey, apiUrl, debug, collectionId, organizat
         }
         return {
             status: 'ERROR',
-            message: errorResponse?.message || 'There was an error creating the collection',
-            id: ''
+            message: errorResponse?.message || 'There was an error updating the collection'
         };
     }
     const response = (await payload.json());

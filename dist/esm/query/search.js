@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.searchQuery = searchQuery;
 const query_1 = require("../types/query");
 const fetch_1 = __importDefault(require("../util/fetch"));
-async function searchQuery({ apiKey, apiUrl, debug, collectionId, categoryId = '', prompt, method = 'normal', type = query_1.QueryKV[method].type, vectorDepth = query_1.QueryKV[method].vectorDepth, nodeDepth = query_1.QueryKV[method].nodeDepth, maxQueries = query_1.QueryKV[method].maxQueries, maxResults = query_1.QueryKV[method].maxResults, includeContent = true, includeEdges = false }) {
+async function searchQuery({ apiKey, apiUrl, debug, collectionId, categoryId = '', prompt, method = 'normal', type = query_1.SearchModes[method].type, vectorDepth = query_1.SearchModes[method].vectorDepth, nodeDepth = query_1.SearchModes[method].nodeDepth, maxQueries = query_1.SearchModes[method].maxQueries, maxResults = query_1.SearchModes[method].maxResults, includeContent = true, includeEdges = false }) {
     const fetch = await (0, fetch_1.default)();
     const url = new URL(`/api/collection/${collectionId}/search`, apiUrl);
     const payload = await fetch(url, {

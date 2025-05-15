@@ -2,12 +2,22 @@ import type { BaseRequest, BaseResponse } from '@gestell/types/base'
 import { Document } from '@gestell/types/document'
 import loadFetch from '@gestell/util/fetch'
 
+/**
+ * Request parameters for retrieving a specific document from a collection.
+ */
 export interface GetDocumentRequest {
+  /** ID of the collection containing the document */
   collectionId: string
+
+  /** ID of the document to retrieve */
   documentId: string
 }
 
+/**
+ * Response data from a document retrieval operation.
+ */
 export interface GetDocumentResponse extends BaseResponse {
+  /** The retrieved document or null if not found */
   result: Document | null
 }
 

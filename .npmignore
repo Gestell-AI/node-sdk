@@ -3,7 +3,8 @@ coverage
 dist/test
 test
 eslint.config.mjs
-preview.gif
 .env
 tsconfig.json
+docs
 bun.lockb
+*.tgz
