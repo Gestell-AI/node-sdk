@@ -174,4 +174,6 @@ export interface CreateCategoryPayload {
   type: CategoryType
   /** Free-form instructions for the new category, markdown is recommended. */
   instructions: string
+  /** If true, only a single entry is allowed per document. */
+  singleEntry: boolean
 }

@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 1.4.1
+
+- `@gestell/sdk/types` export fixes
+
+- Made sure `singleEntry` is typed into `collection.create(...)` payloads.
+
 ## 1.4.0
 
 - Exposed types with more verbose and clear response and request shapes

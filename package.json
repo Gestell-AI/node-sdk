@@ -1,6 +1,6 @@
 {
   "name": "@gestell/sdk",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "The Official Gestell Node.js SDK",
   "private": false,
   "repository": "https://github.com/Gestell-AI/node-sdk.git",
@@ -16,9 +16,10 @@
       "default": "./dist/esm/index.js"
     },
     "./types": {
-      "import": "./dist/types/types.d.ts",
-      "require": "./dist/types/types.d.ts",
-      "types": "./dist/types/types.d.ts"
+      "import": "./dist/esm/types.js",
+      "require": "./dist/cjs/types.js",
+      "types": "./dist/types/types.d.ts",
+      "default": "./dist/esm/types.js"
     }
   },
   "scripts": {
