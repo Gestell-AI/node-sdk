@@ -28,6 +28,7 @@
     "build:esm": "rm -rf dist/esm && tsc -p ./dist/tsconfig.esm.json && tsc-alias -p ./dist/tsconfig.esm.json",
     "build:cjs": "rm -rf dist/cjs && tsc -p ./dist/tsconfig.cjs.json && tsc-alias -p ./dist/tsconfig.cjs.json",
     "build:types": "rm -rf dist/types && tsc -p ./dist/tsconfig.types.json && tsc-alias -p ./dist/tsconfig.types.json",
+    "build:artifacts": "rm -rf artifacts && npx ts-to-zod --all",
     "test": "bun test --timeout 120000 --coverage --coverage-reporter=text --coverage-reporter=lcov",
     "test:submit": "cat ./coverage/lcov.info | coveralls",
     "lint": "eslint ."
@@ -44,12 +45,15 @@
     "@types/mime-types": "2.1.4",
     "@types/node-fetch": "2.6.12",
     "coveralls": "3.1.1",
+    "eslint": "9.27.0",
     "eslint-config-prettier": "10.1.5",
     "eslint-plugin-prettier": "5.4.0",
     "eslint-plugin-simple-import-sort": "12.1.1",
     "jiti": "2.4.2",
+    "ts-to-zod": "3.15.0",
     "tsc-alias": "1.8.16",
     "typescript": "5.8.3",
-    "typescript-eslint": "8.32.1"
+    "typescript-eslint": "8.32.1",
+    "zod": "3.24.4"
   }
 }
