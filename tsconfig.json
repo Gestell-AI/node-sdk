@@ -20,12 +20,14 @@
     }
   },
   "include": [
+    "eslint.config.ts",
     "src/**/*.ts",
     "test/**/*"
   ],
   "exclude": [
-    "eslint.config.mjs",
     "node_modules",
-    "dist"
+    "ts-to-zod.config.js",
+    "dist",
+    "artifacts"
   ]
 }
